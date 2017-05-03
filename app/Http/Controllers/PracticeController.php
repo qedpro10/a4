@@ -3,21 +3,76 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Stock;
 
 class PracticeController extends Controller
 {
-
     /**
-    * Lecture 11) Get all books
+    * Update a stock
     */
-    public function practice7() {
+    public function practice9() {
 
     }
     /**
-    * Lecture 11) Create a new book
+    * Update a stock
+    */
+    public function practice8() {
+        # First get the stock to update
+        $stock = Stock::where('company_name', 'LIKE', '%Ciena%')->first();
+
+        if(!$stock) {
+            dump("Stock not found, can't update.");
+        }
+        else {
+
+            # Change some properties
+            $stock->dividend = true;
+            $stock->website = 'http:/www.ciena.com';
+
+            # Save the changes
+            $stock->save();
+
+            dump('Update complete; check the database to confirm the update worked.');
+        }
+    }
+    /**
+    * Get all stocks that match company name Ciena
+    */
+    public function practice7() {
+        //$stock = new Stock();
+        //$stocks = $stock->where('company_name', 'LIKE', '%CIENA%')->get();
+        //or
+        $stocks = Stock::where('company_name', 'LIKE', '%CIENA%')->get();
+
+        if($stocks->isEmpty()) {
+            dump('No matches found');
+        }
+        else {
+            foreach($stocks as $stock) {
+                dump($stock->ticker);
+            }
+        }
+    }
+    /**
+    * Create a new stock
     */
     public function practice6() {
+        # Instantiate a new Stock Model object
+        $stock = new Stock();
 
+        # Set the parameters
+        # Note how each parameter corresponds to a field in the table
+        $stock->ticker = "CIEN";
+        $stock->company_name = 'Ciena';
+        $stock->logo = "";
+        $stock->website = 'http:/www.ciena.com/investors';
+        $stock->dividend = false;
+
+        # Invoke the Eloquent `save` method to generate a new row in the
+        # `stocks` table, with the above data
+        $stock->save();
+
+        dump('Added: '.$stock->ticker);
     }
     /**
     * Example for Clayton
