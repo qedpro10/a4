@@ -25,6 +25,9 @@
 
     # Post route to remove stock from tracking portfolio
     Route::post('/stocks/delete', 'StockController@delete');
+
+    # Get route to show a form to edit an existing stock
+    Route::get('/stocks/show/{id}', 'StockController@show');
 //});
 
 # Get route to show an individual stock
