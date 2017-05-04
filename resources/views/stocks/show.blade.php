@@ -22,11 +22,11 @@
 
         <p>Last updated: {{ $stock->updated_at }}</p>
 
-        {ChartManager::setChartType('candlestick-chart')
+        {{ ChartManager::setChartType('candlestick-chart')
                         ->setOptions($options)
                         ->setCols($cols)
                         ->setRows($rows)
-                        ->render()}
+                        ->render() }}
 
 
         <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
