@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Stock;
+use Carbon\Carbon;
 
 class PracticeController extends Controller
 {
@@ -11,7 +12,24 @@ class PracticeController extends Controller
     * Update a stock
     */
     public function practice9() {
+        $client = new \Scheb\YahooFinanceApi\ApiClient();
 
+        //Fetch basic data
+        $data = $client->getQuotesList("YHOO"); //Single stock
+
+        $data = $client->getQuotesList(array("YHOO", "GOOG")); //Multiple stocks at once
+        dump($data);
+        //Fetch full data set
+        //$data = $client->getQuotes("YHOO"); //Single stock
+        //$data = $client->getQuotes(array("YHOO", "GOOG")); //Multiple stocks at once
+
+        //Get historical data
+        $startDate = Carbon::createFromDate(2017, 5, 1, 'America/Toronto');
+        $endDate = Carbon::createFromDate(2017, 5, 4, 'America/Toronto');
+        $data = $client->getHistoricalData("YHOO", $startDate, $endDate);
+        dump($data);
+        //Search stocks
+        //$data = $client->search("Yahoo");
     }
     /**
     * Update a stock

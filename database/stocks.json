@@ -1,0 +1,170 @@
+{
+    "AFL": {
+        "id": 0,
+        "company_name": "Aflac, Inc",
+        "logo": "",
+        "website": "http://investors.aflac.com",
+        "dividend":"quarterly",
+        "exchange": "NYSE"
+    },
+    "AMZN": {
+        "id": 1,
+        "company_name": "Amazon Company",
+        "logo": "",
+        "website": "http://http://phx.corporate-ir.net/phoenix.zhtml?c=97664&p=irol-irhome",
+        "dividend": "none",
+        "exchange": "NASDAQ"
+    },
+    "AAPL": {
+        "id": 2,
+        "company_name": "Apple Inc Com",
+        "logo": "",
+        "website": "http://www.apple.com",
+        "dividend": "quarterly",
+        "exchange": "NASDAQ"
+    },
+    "BAC": {
+        "id": 3,
+        "company_name": "Bank of America Corporation",
+        "logo": "",
+        "website": "http://investor.bankofamerica.com",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "CIEN": {
+        "id": 4,
+        "company_name": "Ciena",
+        "logo": "",
+        "website": "http://www.ciena.com/investors",
+        "dividend": "none",
+        "exchange": "NYSE"
+    },
+    "CSCO": {
+        "id": 5,
+        "company_name": "Cisco Systems Inc",
+        "logo": "",
+        "website": "http://investor.cisco.com/investor-relations/overview/default.aspx",
+        "dividend": "quarterly",
+        "exchange": "NASDAQ"
+    },
+    "DIS": {
+        "id": 6,
+        "company_name": "Walt Disney Company",
+        "logo": "",
+        "website": "https://thewaltdisneycompany.com/investor-relations/",
+        "dividend": "semi_annual",
+        "exchange": "NYSE"
+    },
+    "EL": {
+        "id": 7,
+        "company_name": "Estee Lauder Companies Inc.",
+        "logo": "",
+        "website": "http://www.elcompanies.com/investors",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "FB": {
+        "id": 8,
+        "company_name": "Facebook, Inc.",
+        "logo": "",
+        "website": "https://www.facebook.com/",
+        "dividend": "none",
+        "exchange": "NASDAQ"
+    },
+    "FDX": {
+        "id": 9,
+        "company_name": "FedEx Corporation",
+        "logo": "",
+        "website": "http://investors.fedex.com/investor-home/default.aspx",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "GD": {
+        "id": 10,
+        "company_name": "General Dynamics Corporation",
+        "logo": "",
+        "website": "http://investorrelations.gd.com",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "HD": {
+        "id": 11,
+        "company_name": "Home Depot Inc",
+        "logo": "",
+        "website": "http://ir.homedepot.com/",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "IBM": {
+        "id": 12,
+        "company_name": "International Business Machines Corporation",
+        "logo": "",
+        "website": "https://www.ibm.com/investor/?lnk=fab",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "JNJ": {
+        "id": 13,
+        "company_name": "Johnson and Johnson",
+        "logo": "",
+        "website": "http://www.investor.jnj.com/",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "K": {
+        "id": 14,
+        "company_name": "Kellogg Company",
+        "logo": "",
+        "website": "http://investor.kelloggs.com/",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "LB": {
+        "id": 15,
+        "company_name": "L Brands Inc",
+        "logo": "",
+        "website": "http://investors.lb.com/phoenix.zhtml?c=94854&p=irol-irHome",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "MCD": {
+        "id": 16,
+        "company_name": "McDonald's Corporation",
+        "logo": "",
+        "website": "http://corporate.mcdonalds.com/mcd/investors.html",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "NFLX": {
+        "id": 17,
+        "company_name": "NetFlix, Inc",
+        "logo": "",
+        "website": "https://ir.netflix.com/index.cfm",
+        "dividend": "none",
+        "exchange": "NASDAQ"
+    },
+    "OC": {
+        "id": 18,
+        "company_name": "Owens Corning",
+        "logo": "",
+        "website": "http://investor.owenscorning.com/investors/overview/default.aspx",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    },
+    "PCLN": {
+        "id": 19,
+        "company_name": "Priceline Group Inc.",
+        "logo": "",
+        "website": "http://ir.pricelinegroup.com",
+        "dividend": "none",
+        "exchange": "NASDAQ"
+    },
+    "QSR": {
+        "id": 20,
+        "company_name": "Restaurant Brands International",
+        "logo": "",
+        "website": "http://www.rbi.com/Investor-Home",
+        "dividend": "quarterly",
+        "exchange": "NYSE"
+    }
+}

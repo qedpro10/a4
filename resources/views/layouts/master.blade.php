@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta name="description" content="Stocker">
-    <meta name="author" content="Jen Smith">
     <title>
-        @yield('title', 'Stocker')
+        @yield('title', 'DayStocker')
     </title>
 
-    <link rel="icon" type="images/png" href="images/favicon.ico">
+    <meta charset='utf-8'>
+
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
     <link href="/css/stocker.css" type='text/css' rel='stylesheet'>
 
     @stack('head')
@@ -17,27 +17,56 @@
 </head>
 <body>
 
-    <header>
+    <div id='content'>
+        @if(Session::get('message') != null)
+            <div class='message'>{{ Session::get('message') }}</div>
+        @endif
 
-    </header>
+        <header>
+            <a href='/'>
+                <img
+                id='logo'
+                src='images/dayTrader_world.png'
+                alt='DayStocker Logo'></a>
 
-    <div class="container">
-        <div class="row">
-            <div class="mainpage">
+                <nav>
+                    <ul>
+                        @if(Auth::check())
+                            <li><a href='/'>Home</a></li>
+                            <li><a href='/search'>Search</a></li>
+                            <li><a href='/stocks/new'>Add a stock to track</a></li>
+                            <li>
+                                <form method='POST' id='logout' action='/logout'>
+                                    {{csrf_field()}}
+                                    <a href='#' onClick='document.getElementById("logout").submit();'>Logout</a>
+                                </form>
+                            </li>
+                        @else
+                            <li><a href='/'>Home</a></li>
+                            <li><a href='/login'>Login</a></li>
+                            <li><a href='/register'>Register</a></li>
+                        @endif
+                    </ul>
+                </nav>
+
+            </header>
+
+            <section>
                 @yield('content')
-            </div>
+            </section>
 
-            <div>
-                @yield('quiz')
-            </div>
+            <footer>
+                &copy; {{ date('Y') }} &nbsp;&nbsp;
+                <a href='https://github.com/qedpro10/a4' target='_blank'><i class='fa fa-github'></i> View on Github</a> &nbsp;&nbsp;
+                <a href='http://a4.rogue42.me' target='_blank'><i class='fa fa-link'></i> View on Production</a>
+            </footer>
+
         </div>
-    </div>
 
-    <footer class="foot">
-        <p>Jen Smith &copy; {{ date('Y') }}</p>
-    </footer>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="/js/stocker.js"></script>
 
-    @stack('body')
+        @stack('body')
 
-</body>
-</html>
+    </body>
+    </html>

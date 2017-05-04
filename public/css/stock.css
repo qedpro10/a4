@@ -1,0 +1,78 @@
+/*----------------------------------------------------
+"Latest additions to the Foobooks library" callout
+-----------------------------------------------------*/
+#newStocks {
+    background-color:Cornsilk;
+    padding:10px;
+    border-radius:5px;
+    margin-top:10px;
+    text-align:center;
+}
+
+#newStocks h2 {
+    margin-top:0;
+    text-align:center;
+    font-weight:bold;
+    font-size:1.6rem;
+}
+#newStocks ul {
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+
+
+/*----------------------------------------------------
+Stocks
+-----------------------------------------------------*/
+#stocks {
+    margin-bottom:20px;
+}
+
+.stock {
+    padding:10px;
+    width:100%;
+    margin-bottom:5px;
+    text-align:left;
+}
+
+.stock h3 {
+    font-size:1.3em;
+    margin:4px 0 4px 0;
+    font-style:italic;
+    text-align:left;
+}
+
+a.stockAction:link {
+    padding:5px;
+    font-size:2.0rem;
+}
+
+a.stockAction:hover {
+    padding:5px;
+    color:#18bc9c; /* flatly teel */
+}
+
+.cover {
+    float:left;
+    width:100px;
+    height:137px;
+    background-color:#eee;
+    border:1px solid black;
+    margin-right:10px;
+}
+
+
+/*----------------------------------------------------
+Tags checkboxes
+-----------------------------------------------------*/
+#tags {
+    text-align:left;
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+
+#tags label {
+    font-weight:normal;
+}

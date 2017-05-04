@@ -28,9 +28,7 @@ class CreateStocksTable extends Migration
     		$table->string('company_name');
     		$table->string('logo')->nullable();
     		$table->string('website')->nullable();
-    		$table->boolean('dividend')->nullable();
-
-    		# FYI: We're skipping the 'tags' field for now; more on that later.
+    		$table->string('dividend')->nullable();
 
     	});
     }

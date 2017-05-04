@@ -4,34 +4,34 @@
 * Book related routes
 */
 # The following routes require authorization
-Route::group(['middleware' => 'auth'], function () {
+//Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/books', 'BookController@index');
+    Route::get('/index', 'StockController@index');
 
-    # Get route to show a form to create a new book
-    Route::get('/books/new', 'BookController@createNewBook');
+    # Get route to show a form to create new stock in portfolio
+    Route::get('/stocks/new', 'StockController@createNewStock');
 
-    # Post route to process the form to add a new book
-    Route::post('/books/new', 'BookController@storeNewBook');
+    # Post route to process the form to add a new stock
+    Route::post('/stocks/new', 'StockController@storeNewStock');
 
-    # Get route to show a form to edit an existing book
-    Route::get('/books/edit/{id}', 'BookController@edit');
+    # Get route to show a form to edit an existing stock
+    Route::get('/stocks/edit/{id}', 'StockController@edit');
 
-    # Post route to process the form to save edits to a book
-    Route::post('/books/edit', 'BookController@saveEdits');
+    # Post route to process the form to save edits to the stock
+    Route::post('/stocks/edit', 'StockController@saveEdits');
 
-    # Get route to confirm deletion of book
-    Route::get('/books/delete/{id}', 'BookController@confirmDeletion');
+    # Get route to confirm deletion of stock
+    Route::get('/stocks/delete/{id}', 'StockController@confirmDeletion');
 
-    # Post route to actually destroy the book
-    Route::post('/books/delete', 'BookController@delete');
-});
+    # Post route to remove stock from tracking portfolio
+    Route::post('/stocks/delete', 'StockController@delete');
+//});
 
-# Get route to show an individual book
-Route::get('/books/{id?}', 'BookController@show');
+# Get route to show an individual stock
+Route::get('/stocks/{id?}', 'StockController@show');
 
 # Get route to a search page
-Route::get('/search', 'BookController@search');
+Route::get('/search', 'StockController@search');
 
 /**
 * Log viewer
@@ -53,7 +53,7 @@ Route::any('/practice/{n?}', 'PracticeController@index');
 */
 Auth::routes();
 
-Route::get('/home', 'BookController@index');
+Route::get('/home', 'StockController@index');
 
 Route::get('/logout', function() {
     Auth::logout();
