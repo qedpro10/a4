@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Stock;
+use Session;
+use Auth;
 
 class StockController extends Controller
 {
@@ -14,19 +16,19 @@ class StockController extends Controller
 	*/
     public function index(Request $request) {
 
-        $user = $request->user();
-        # Note: We're getting the user from the request, but you can also get it like this:
-        //$user = Auth::user();
-        if($user) {
+        // return null values if a user is not logged in
+        $stocks = [];
+        $newStocks = [];
 
-            $stocks = $user->stocks()->orderBy('title')->get();
-            # Get 3 most recently added stocks
-            $newStocks = $stocks->sortByDesc('created_at')->take(3); # Query existing Collection
+        // $user = $request->user();
+        $user = Auth::user();
+        if($user) {
+            // use the pivot table to get all the stocks favorited by the user
+            $stocks = $user->stocks()->orderBy('ticker')->get();
+            // get the 3 most recently added and show them
+            $newStocks = $stocks->sortByDesc('created_at')->take(3);
         }
-        else {
-            $stocks = [];
-            $newstocks = [];
-        }
+
         return view('stocks.index')->with([
             'stocks' => $stocks,
             'newStocks' => $newStocks,
@@ -116,6 +118,10 @@ class StockController extends Controller
     * Display the form to add a new stock
     */
     public function createNewStock(Request $request) {
+        if(!Auth::check()) {
+            Session::flash('message','You have to be logged in to create a new stock');
+            return redirect('/');
+        }
         $exchangesForDropdown = Exchanges::getExchangesForDropdown();
         $tagsForCheckboxes = Tag::getTagsForCheckboxes();
         return view('stocks.new')->with([

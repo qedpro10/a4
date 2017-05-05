@@ -9,6 +9,7 @@
         "barryvdh/laravel-debugbar": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "laravelcollective/html": "^5.4",
         "rych/random": "^0.1.0",
         "scheb/yahoo-finance-api": "^1.4",
         "scopdrag/laravel-google-chart": "^1.0"

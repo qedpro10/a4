@@ -4,7 +4,7 @@
 * Book related routes
 */
 # The following routes require authorization
-//Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/index', 'StockController@index');
 
@@ -28,13 +28,22 @@
 
     # Get route to show a form to edit an existing stock
     Route::get('/stocks/show/{id}', 'StockController@show');
-//});
+});
 
 # Get route to show an individual stock
 Route::get('/stocks/{id?}', 'StockController@show');
 
 # Get route to a search page
 Route::get('/search', 'StockController@search');
+
+/**
+* Auth routes
+
+*/
+Auth::routes();
+
+Route::get('/home', 'StockController@index');
+
 
 /**
 * Log viewer
@@ -49,19 +58,6 @@ if(config('app.env') == 'local') {
 * Practice
 */
 Route::any('/practice/{n?}', 'PracticeController@index');
-
-
-/**
-* Auth related routes
-*/
-Auth::routes();
-
-Route::get('/home', 'StockController@index');
-
-Route::get('/logout', function() {
-    Auth::logout();
-    dump("You've been logged out");
-});
 
 
 /**

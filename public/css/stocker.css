@@ -19,6 +19,7 @@ footer {
     text-align:center;
     padding:5px;
 }
+
 /* End Sticky Footer */
 
 
@@ -89,6 +90,8 @@ h3 {
 }
 
 
+
+
 /*----------------------------------------------------
 Layout
 -----------------------------------------------------*/
@@ -148,6 +151,7 @@ header #logo {
 Nav bar
 -----------------------------------------------------*/
 nav {
+    clear:both;
     border-top:1px solid #eee;
     border-bottom:1px solid #eee;
     padding:5px;
@@ -220,4 +224,26 @@ label {
 #login, #register {
     width:300px;
     margin:auto;
+}
+
+.img-valign {
+    float: left;
+  vertical-align: middle;
+  margin-bottom: 0.75em;
+}
+
+.dayText {
+    float:right;
+    vertical-align: middle;
+    font-size: 64px;
+    padding-top: 50px;
+    margin-bottom: 0.75em;
+}
+.daySubText {
+  font-size: 18px;
+  padding-left: 20px;
+}
+
+.dayAlign {
+    vertical-align: middle;
 }
