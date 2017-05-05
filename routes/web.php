@@ -169,3 +169,5 @@ Route::get('/debug', function() {
 	echo '</pre>';
 
 });
+
+Route::get('/chart', 'StockController@googleLineChart');

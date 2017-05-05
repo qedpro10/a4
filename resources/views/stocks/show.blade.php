@@ -25,6 +25,12 @@
         <p>Day Low: {{ $current['DaysLow'] }}</p>
         <p>Volume: {{ $current['Volume'] }}</p>
 
+        {!!ChartManager::setChartType('bar-chart')
+                        ->setOptions($options)
+                        ->setCols($cols)
+                        ->setRows($rows)
+                     ->render()!!}
+
 
         <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
         <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-trash'></i></a>

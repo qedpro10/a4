@@ -8,6 +8,7 @@ use Session;
 use Auth;
 use Carbon\Carbon;
 use App\YahooClient;
+use DB;
 
 class StockController extends Controller
 {
@@ -43,6 +44,33 @@ class StockController extends Controller
     */
     public function show($id) {
 
+
+        $options = [
+            'title' => 'Population of Largest U.S. Cities',
+            'chartArea' => ['width' => '50%'],
+            'hAxis' => [
+                'title' => 'Total Population',
+                'minValue' => 0
+            ],
+            'vAxis' => [
+                'title' => 'City'
+            ],
+            'bars' => 'horizontal', //required if using material chart
+            'axes' => [
+                'y' => [0 => ['side' => 'right']]
+            ]
+        ];
+
+        $cols = ['City', '2010 Population', '2000 PopulaÎtions'];
+        $rows = [
+            ['New York City, NY', 8175000, 8008000],
+            ['Los Angeles, CA', 3792000, 3694000],
+            ['Chicago, IL', 2695000, 2896000],
+            ['Houston, TX', 2099000, 1953000],
+            ['Philadelphia, PA', 1526000, 1517000]
+        ];
+
+
         $stock = Stock::find($id);
 
         if(!$stock) {
@@ -53,7 +81,8 @@ class StockController extends Controller
         // get 30 days of data
         $startDate = Carbon::now()->subMonths(1);
         $endDate = Carbon::now();
-        //$historicalData = YahooClient::getHistoricalData($stock->ticker, $startDate, $endDate);
+        $historicalData = YahooClient::getHistoricalData($stock->ticker, $startDate, $endDate);
+
         $currentData = YahooClient::getCurrentData($stock->ticker);
         //dump($currentData);
 
@@ -65,7 +94,9 @@ class StockController extends Controller
             'stock' => $stock,
             'current' => $currentData,
             //'historical' => $historicalData,
-            'open' => $open,
+            'options' => $options,
+            'cols' => $cols,
+            'rows' => $rows,
         ]);
     }
 
@@ -265,6 +296,19 @@ class StockController extends Controller
         # Finish
         Session::flash('message', $stock->ticker.' was deleted.');
         return redirect('/stocks');
+    }
+
+    public function googleLineChart(Request $request) {
+
+        $startDate = Carbon::now()->subMonths(1);
+        $endDate = Carbon::now();
+        $data = YahooClient::getHistoricalData("CIEN", $startDate, $endDate);
+        //echo json_encode($data);
+
+        return view('stocks.chart')->with([
+            'histData' => json_encode($data),
+        ]);
+
     }
 
 
