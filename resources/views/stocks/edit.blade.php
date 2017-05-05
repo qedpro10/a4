@@ -2,7 +2,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Edit book: {{ $stock->title }}
+    Edit Stock: {{ $stock->title }}
 @endsection
 
 @push('head')

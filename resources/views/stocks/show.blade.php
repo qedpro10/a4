@@ -1,3 +1,4 @@
+{{-- /resources/views/stocks/show.blade.php --}}
 @extends('layouts.master')
 
 @push('head')
@@ -14,13 +15,16 @@
 
         <h1>{{ $stock->ticker }}</h1>
 
-        <a href='/stocks/{{ $stock->id }}'><img class='logo' src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}'></a>
+        <a href='{{ $stock->website }}' target='_blank'><img class='stocklogo' src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}'></a>
 
-        <p>Company Website: {{ $stock->website }}</p>
-
-        <p>Added on: {{ $stock->created_at }}</p>
-
+        <p>Watching since: {{ $stock->created_at }}</p>
         <p>Last updated: {{ $stock->updated_at }}</p>
+        <br>
+        <p>Open: {{ $current['Open'] }}</p>
+        <p>Day High: {{ $current['DaysHigh'] }}</p>
+        <p>Day Low: {{ $current['DaysLow'] }}</p>
+        <p>Volume: {{ $current['Volume'] }}</p>
+
 
         <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
         <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-trash'></i></a>

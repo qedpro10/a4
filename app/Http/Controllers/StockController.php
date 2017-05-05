@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Stock;
 use Session;
 use Auth;
+use Carbon\Carbon;
+use App\YahooClient;
 
 class StockController extends Controller
 {
@@ -48,27 +50,22 @@ class StockController extends Controller
             return redirect('/');
         }
 
-        $rows = [
-                    ['Mon', 20, 28, 38, 45],
-                    ['Tue', 31, 38, 55, 66],
-                    ['Wed', 50, 55, 77, 80],
-                    ['Thu', 77, 77, 66, 50],
-                    ['Fri', 68, 66, 22, 15]
-                ];
+        // get 30 days of data
+        $startDate = Carbon::now()->subMonths(1);
+        $endDate = Carbon::now();
+        //$historicalData = YahooClient::getHistoricalData($stock->ticker, $startDate, $endDate);
+        $currentData = YahooClient::getCurrentData($stock->ticker);
+        //dump($currentData);
 
-
-                $options = [
-                    'legend' => 'none'
-                ];
-
-
-                $cols =[];
+        $open = $currentData['Open'];
+        //dump($open);
+        //dump($currentData);
 
         return view('stocks.show')->with([
             'stock' => $stock,
-            'rows' => $rows,
-            'options' => $options,
-            'cols' => $cols,
+            'current' => $currentData,
+            //'historical' => $historicalData,
+            'open' => $open,
         ]);
     }
 

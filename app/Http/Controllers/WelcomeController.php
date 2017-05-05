@@ -15,7 +15,7 @@ class WelcomeController extends Controller
     public function __invoke() {
 
         if(Auth::user()) {
-            return redirect('/main');
+            return redirect('/stocks');
         }
 
         return view('welcome');
