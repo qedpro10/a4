@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class YahooClient
 {
+    // Gets the stock historical data for the given date range
     public static function getHistoricalData($ticker, $startDate, $endDate) {
 
         $client = new \Scheb\YahooFinanceApi\ApiClient();
@@ -16,16 +17,11 @@ class YahooClient
         $quote = $results['quote'];
         foreach ($quote as $day => $data) {
             $histData[$day] = [(string)$day, (float)$data['Low'], (float)$data['Open'], (float)$data['Close'], (float)$data['High']];
-            //$item = array($day, $data['Low'], $data['Open'], $data['Close'], $data['High']);
-            //$histData[] = $item;
         }
-        //dump($histData);
-        //echo json_encode($histData);
-        // parse the data into the candlestick array format
-        // day, low, open, close, high
         return $histData;
     }
 
+    // Gets the stock current information and price
     public static function getCurrentData($ticker) {
 
         $client = new \Scheb\YahooFinanceApi\ApiClient();
@@ -36,10 +32,20 @@ class YahooClient
         return $quote;
     }
 
-    public static function parseHistData($data) {
+    // this determines if the stock ticker exists.  Since the api throws an
+    // exception if the stock doesn't exist, need to handle this with a try-catch
+    public static function findStock($ticker) {
+        $client = new \Scheb\YahooFinanceApi\ApiClient();
 
-        dump($data);
+        try {
+            $data = $client->search($ticker);
+        }
+        catch (ApiException $e) {
+            //dump("catching exception - stock doesn't exist");
+            return null;
+        }
 
-        return $csData;
+        //dump("stock exists");
+        return $data;
     }
 }

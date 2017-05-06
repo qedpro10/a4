@@ -2,7 +2,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Edit Stock: {{ $stock->title }}
+    Edit Stock: {{ $stock->ticker }}
 @endsection
 
 @push('head')
@@ -11,7 +11,7 @@
 
 @section('content')
     <h1>Edit</h1>
-    <h2>{{ $stock->title }}</h2>
+    <h2>{{ $stock->ticker }}</h2>
 
     <form method='POST' action='/stocks/edit'>
         {{ csrf_field() }}
@@ -20,13 +20,10 @@
 
         <input type='hidden' name='id' value='{{$stock->id}}'>
 
-        <label for='ticker'>* Ticker</label>
-        <input type='text' name='ticker' id='ticker' value='{{ old('ticker', $stock->ticker) }}'>
-
         <label for='exchange_id'>* Stock Exchange:</label>
         <select id='exchange_id' name='exchange_id'>
             <option value='0'>Choose</option>
-            @foreach($exchangeForDropdown as $exchange_id => $exchangeName)
+            @foreach($exchangesForDropdown as $exchange_id => $exchangeName)
                 <option value='{{ $exchange_id }}' {{ ($stock->exchange_id == $exchange_id) ? 'SELECTED' : '' }}>
                     {{ $exchangeName }}
                 </option>
@@ -48,7 +45,7 @@
 
         <br><input class='btn btn-primary' type='submit' value='Save changes'><br><br>
 
-        
+
 
     </form>
 

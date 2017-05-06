@@ -149,7 +149,7 @@ class StockController extends Controller
         // need to use the first() method, get does not allow you to use ->users() method
         $newStock = Stock::where('ticker', '=', $request->ticker)->first();
 
-        if (!$newStock) {
+        if (is_null($newStock)) {
         // else verify that the stock exists by doing a query
 
             # Add new stock to database
@@ -191,20 +191,14 @@ class StockController extends Controller
     * Show form to edit a stock
     */
     public function edit($id) {
-        $stock = Stock::with('tags')->find($id);
+        $stock = Stock::find($id);
         if(is_null($stock)) {
             Session::flash('message', 'The stock you requested was not found.');
             return redirect('/stocks');
         }
+
         $exchangesForDropdown = Exchange::getExchangesForDropdown();
-        //$tagsForCheckboxes = Tag::getTagsForCheckboxes();
-        # Create a simple array of just the tag names for tags associated with this stock;
-        # will be used in the view to decide which tags should be checked off
-        //$tagsForThisStock = [];
-        //foreach($stock->tags as $tag) {
-        //    $tagsForThisStock[] = $tag->name;
-        //}
-        # Results in an array like this: $tagsForThisStock => ['novel','fiction','classic'];
+
         return view('stocks.edit')->with([
             'id' => $id,
             'stock' => $stock,
@@ -224,8 +218,7 @@ class StockController extends Controller
             'exchange_id.not_in' => 'Exchange not selected.',
         ];
         $this->validate($request, [
-            'ticker' => 'required|min:3',
-            'company_name' => 'required|alphanumeric',
+            'company_name' => 'required',
             'logo' => 'url',
             'website' => 'url',
             'exchange_id' => 'not_in:0',
@@ -233,23 +226,11 @@ class StockController extends Controller
 
         $stock = Stock::find($request->id);
         # Edit stock in the database
-        $stock->ticker = $request->ticker;
         $stock->company_name = $request->company_name;
         $stock->logo = $request->logo;
         $stock->website = $request->website;
         $stock->exchange_id = $request->exchange_id;
-        # If there were tags selected...
-        if($request->tags) {
-            $tags = $request->tags;
-        }
-        # If there were no tags selected (i.e. no tags in the request)
-        # default to an empty array of tags
-        else {
-            $tags = [];
-        }
-        # Above if/else could be condensed down to this: $tags = ($request->tags) ?: [];
-        # Sync tags
-        $stock->tags()->sync($tags);
+
         $stock->save();
         Session::flash('message', 'Your changes to '.$stock->ticker.' were saved.');
         return redirect('/stocks/edit/'.$request->id);
@@ -274,17 +255,32 @@ class StockController extends Controller
     public function delete(Request $request) {
         # Get the stock to be deleted
         $stock = Stock::find($request->id);
-        if(!$stock) {
+        if(is_null($stock)) {
             Session::flash('message', 'Deletion failed; stock not found.');
             return redirect('/stocks');
         }
-        $stock->tags()->detach();
-        $stock->delete();
+        // get the user
+        $user = $request->user();
+        //only delete the pivot entry associated with that user
+        $stock->users()->detach($user->id);
+
+        // check to see if there are any other users attached to this Stock
+        // if not delete the stock from the table permanently
+        $testUser = $stock->users()->first();
+
+        if (is_null($testUser)) {
+            $stock->delete();
+            Session::flash('message', $stock->ticker.' was deleted.');
+        }
+        else {
+            Session::flash('message', $stock->ticker.' was removed from favorites.');
+        }
         # Finish
-        Session::flash('message', $stock->ticker.' was deleted.');
         return redirect('/stocks');
     }
 
+
+    // test function
     public function googleLineChart(Request $request) {
 
         $startDate = Carbon::now()->subMonths(1);

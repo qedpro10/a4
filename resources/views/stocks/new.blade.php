@@ -40,17 +40,8 @@
         <label for='website'>* URL to company investor website</label>
         <input type='text' name='website' id='website' value='{{ old('website', 'https://en.wikipedia.org/wiki/Acme_Corporation') }}'>
 
-        @if(count($errors) > 0)
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-
-
-
+        {{-- Extracted error code to its own view file --}}
+        @include('errors')
 
         <input class='btn btn-primary' type='submit' value='Add Stock'>
     </form>
