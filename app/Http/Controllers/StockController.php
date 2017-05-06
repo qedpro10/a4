@@ -168,11 +168,18 @@ class StockController extends Controller
         }
         else {
             // favorite the stock - add ot the pivot table if its not already there
-            // FIXME - need to verify that user hasn't already been added because it
+            // need to verify that user hasn't already been added because it
             // will add another entry to the pivot table.
             $user = $request->user();
-            $newStock->users()->save($user);
-            Session::flash('message', 'The stock '.$request->ticker.' has been added to favorites.');
+            $testUser = $newStock->users()->where('user_id', '=', $user->user_id)->get();
+            if ($testUser->isEmpty()) {
+                $newStock->users()->save($user);
+                Session::flash('message', 'The stock '.$request->ticker.' has been added to favorites.');
+            }
+            else {
+                Session::flash('message', 'The stock '.$request->ticker.' already a favorite.');
+            }
+
         }
         # Redirect the user to stock index
         return redirect('/stocks');
