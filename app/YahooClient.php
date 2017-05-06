@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+use Scheb\YahooFinanceApi\Exception\HttpException;
+use Scheb\YahooFinanceApi\Exception\ApiException;
+
 class YahooClient
 {
     // Gets the stock historical data for the given date range
@@ -34,18 +37,29 @@ class YahooClient
 
     // this determines if the stock ticker exists.  Since the api throws an
     // exception if the stock doesn't exist, need to handle this with a try-catch
+    // the yahoo api search API does not work reliably so I'm doing a getQuotes
+    // and determining if the data is valid.
     public static function findStock($ticker) {
         $client = new \Scheb\YahooFinanceApi\ApiClient();
 
         try {
-            $data = $client->search($ticker);
+            // search api is not working
+            //$data = $client->search($ticker);
+            $data = $client->getQuotes($ticker);
+            $query = $data['query'];
+            $results = $query['results'];
+            $quote = $results['quote'];
+            if($quote['Ask'] == null) {
+                return $null;
+            }
+            else {
+                // get the needed data out of the quote and return that
+                return $data;
+            }
+
         }
         catch (ApiException $e) {
-            //dump("catching exception - stock doesn't exist");
             return null;
         }
-
-        //dump("stock exists");
-        return $data;
     }
 }

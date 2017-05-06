@@ -18,14 +18,9 @@ class PracticeController extends Controller
     * stock doesn't exist - needed to handle this in a try-catch
     */
     public function practice11() {
-        try {
+
             $data = YahooClient::findStock("CRAP");
-        }
-        catch (ApiException $e) {
-            dump("catching exception - stock doesn't exist");
-            return null;
-        }
-        dump("stock exists");
+
         return $data;
     }
 

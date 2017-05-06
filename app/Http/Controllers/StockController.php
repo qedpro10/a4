@@ -68,10 +68,65 @@ class StockController extends Controller
     }
 
     /**
-    * GET
-    * /search
+     * GET
+     * /search
     */
     public function search(Request $request) {
+        $searchResults = [];
+        $searchTicker = $request->input('ticker', null);
+
+        // only search if the ticker has been set
+        if($searchTicker) {
+            // Get search type
+            $searchType = $request->input('searchType');
+
+            if ($searchType == 'stockEx') {
+                dump("searching exchanges for " . $searchTicker);
+                // search the stock exchange for the ticker
+                $data = YahooClient::findStock(strToUpper($searchTicker));
+                if (is_null($data)) {
+                    // stock was not found
+                    // generate an error message and redirect back to the same page
+                }
+                else {
+                    // get the stock info to display
+                    // add to the search results
+                }
+            }
+            else {
+                // search the local database
+                // create the search ticker based on exact or not
+                // note that this should be applicable to both local and stocks
+                // exchange searches but the stock API doesn't work for general
+                // searches
+                $exact = $request->input('exact');
+                if (!$exact) {
+                    // search the database with fuzzy search assuming that the first
+                    // letters specified are a match but the rest are not
+                    $searchTicker = $searchTicker . '%';
+                }
+
+                $stocks = Stock::where('ticker', 'LIKE', $searchTicker)->get();
+                //dump($stocks);
+                foreach($stocks as $stock) {
+                    $searchResults[$stock->ticker] = $stock;
+                }
+                //dd($searchResults);
+            }
+        }
+
+        return view('stocks.search')->with([
+            'searchTicker' => $searchTicker,
+            'exact' => $request->has('exact'),
+            'searchResults' => $searchResults,
+        ]);
+    }
+
+    /**
+    * GET
+    * /search - old code - not sure how this fits in
+    */
+    public function searchDB(Request $request) {
         # Start with an empty array of search results; stocks that
         # match our search query will get added to this array
         $searchResults = [];
