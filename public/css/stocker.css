@@ -228,8 +228,8 @@ label {
 
 .img-valign {
     float: left;
-  vertical-align: middle;
-  margin-bottom: 0.75em;
+    vertical-align: middle;
+    margin-bottom: 0.75em;
 }
 
 .dayText {
@@ -246,4 +246,10 @@ label {
 
 .dayAlign {
     vertical-align: middle;
+}
+
+.stocklogo {
+    height: 50px;
+    padding-bottom: 20px;
+
 }

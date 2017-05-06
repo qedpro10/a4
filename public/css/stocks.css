@@ -76,3 +76,14 @@ Tags checkboxes
 #tags label {
     font-weight:normal;
 }
+
+.content {
+  height:auto;
+  float: left;
+}
+
+.chart {
+  height:auto;
+  float:right;
+  padding-left: 100px;
+}

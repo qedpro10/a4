@@ -17,6 +17,7 @@ class StockUserTableSeeder extends Seeder
             'CIEN' => ['qedpro@hotmail.com', 'psmith@hotmail.com'],
             'BAC' => ['jamal@harvard.edu'],
             'MCD' => ['jill@harvard.edu', 'qedpro@hotmail.com'],
+            'AAPL' => ['psmith@hotmail.com', 'qedpro@hotmail.com'],
         ];
 
         foreach($stocks as $ticker => $users) {

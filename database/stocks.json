@@ -2,7 +2,7 @@
     "AFL": {
         "id": 0,
         "company_name": "Aflac, Inc",
-        "logo": "https://en.wikipedia.org/wiki/Aflac#/media/File:Aflac.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/en/b/b2/Aflac.svg",
         "website": "http://investors.aflac.com",
         "dividend":"quarterly",
         "exchange": "NYSE"
@@ -10,7 +10,7 @@
     "AMZN": {
         "id": 1,
         "company_name": "Amazon Company",
-        "logo": "https://en.wikipedia.org/wiki/Amazon.com#/media/File:Amazon_logo_plain.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/7/70/Amazon_logo_plain.svg",
         "website": "http://http://phx.corporate-ir.net/phoenix.zhtml?c=97664&p=irol-irhome",
         "dividend": "none",
         "exchange": "NASDAQ"
@@ -18,7 +18,7 @@
     "AAPL": {
         "id": 2,
         "company_name": "Apple Inc Com",
-        "logo": "https://en.wikipedia.org/wiki/Apple_Inc.#/media/File:Apple_logo_black.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
         "website": "http://www.apple.com",
         "dividend": "quarterly",
         "exchange": "NASDAQ"
@@ -42,7 +42,7 @@
     "CSCO": {
         "id": 5,
         "company_name": "Cisco Systems Inc",
-        "logo": "https://en.wikipedia.org/wiki/Cisco_Systems#/media/File:Cisco_logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/6/64/Cisco_logo.svg",
         "website": "http://investor.cisco.com/investor-relations/overview/default.aspx",
         "dividend": "quarterly",
         "exchange": "NASDAQ"
@@ -50,7 +50,7 @@
     "DIS": {
         "id": 6,
         "company_name": "Walt Disney Company",
-        "logo": "https://en.wikipedia.org/wiki/The_Walt_Disney_Company#/media/File:TWDC_Logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/6/65/TWDC_Logo.svg",
         "website": "https://thewaltdisneycompany.com/investor-relations/",
         "dividend": "semi_annual",
         "exchange": "NYSE"
@@ -58,7 +58,7 @@
     "EL": {
         "id": 7,
         "company_name": "Estee Lauder Companies Inc.",
-        "logo": "https://en.wikipedia.org/wiki/Est%C3%A9e_Lauder_Companies#/media/File:ELCompanies_Logo.JPG",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e8/ELCompanies_Logo.JPG",
         "website": "http://www.elcompanies.com/investors",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -66,7 +66,7 @@
     "FB": {
         "id": 8,
         "company_name": "Facebook, Inc.",
-        "logo": "https://en.wikipedia.org/wiki/Facebook#/media/File:Facebook_New_Logo_%282015%29.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Facebook_New_Logo_%282015%29.svg",
         "website": "https://www.facebook.com/",
         "dividend": "none",
         "exchange": "NASDAQ"
@@ -74,7 +74,7 @@
     "FDX": {
         "id": 9,
         "company_name": "FedEx Corporation",
-        "logo": "https://en.wikipedia.org/wiki/FedEx#/media/File:FedEx_Corporation_logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/9/93/FedEx_Corporation_logo.svg",
         "website": "http://investors.fedex.com/investor-home/default.aspx",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -82,7 +82,7 @@
     "GD": {
         "id": 10,
         "company_name": "General Dynamics Corporation",
-        "logo": "https://en.wikipedia.org/wiki/General_Dynamics#/media/File:Gen-dyn.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/7/70/Gen-dyn.svg",
         "website": "http://investorrelations.gd.com",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -90,7 +90,7 @@
     "HD": {
         "id": 11,
         "company_name": "Home Depot Inc",
-        "logo": "https://en.wikipedia.org/wiki/The_Home_Depot#/media/File:TheHomeDepot.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/5/5f/TheHomeDepot.svg",
         "website": "http://ir.homedepot.com/",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -98,7 +98,7 @@
     "IBM": {
         "id": 12,
         "company_name": "International Business Machines Corporation",
-        "logo": "https://en.wikipedia.org/wiki/IBM#/media/File:IBM_logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
         "website": "https://www.ibm.com/investor/?lnk=fab",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -106,7 +106,7 @@
     "JNJ": {
         "id": 13,
         "company_name": "Johnson and Johnson",
-        "logo": "https://en.wikipedia.org/wiki/Johnson_%26_Johnson#/media/File:JohnsonandJohnsonLogo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/2/22/JohnsonandJohnsonLogo.svg",
         "website": "http://www.investor.jnj.com/",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -114,7 +114,7 @@
     "K": {
         "id": 14,
         "company_name": "Kellogg Company",
-        "logo": "https://en.wikipedia.org/wiki/Kellogg's#/media/File:Kellogg%27s-Logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Kellogg's-Logo.svg",
         "website": "http://investor.kelloggs.com/",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -130,7 +130,7 @@
     "MCD": {
         "id": 16,
         "company_name": "McDonald's Corporation",
-        "logo": "https://en.wikipedia.org/wiki/McDonald's#/media/File:McDonald%27s_Golden_Arches.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/3/36/McDonald's_Golden_Arches.svg",
         "website": "http://corporate.mcdonalds.com/mcd/investors.html",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -138,7 +138,7 @@
     "NFLX": {
         "id": 17,
         "company_name": "NetFlix, Inc",
-        "logo": "https://en.wikipedia.org/wiki/Netflix#/media/File:Netflix_2015_logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
         "website": "https://ir.netflix.com/index.cfm",
         "dividend": "none",
         "exchange": "NASDAQ"
@@ -146,7 +146,7 @@
     "OC": {
         "id": 18,
         "company_name": "Owens Corning",
-        "logo": "https://en.wikipedia.org/wiki/Owens_Corning#/media/File:Owens_Corning_logo.jpeg",
+        "logo": "https://upload.wikimedia.org/wikipedia/en/6/61/Owens_Corning_logo.jpeg",
         "website": "http://investor.owenscorning.com/investors/overview/default.aspx",
         "dividend": "quarterly",
         "exchange": "NYSE"
@@ -154,7 +154,7 @@
     "PCLN": {
         "id": 19,
         "company_name": "Priceline Group Inc.",
-        "logo": "https://en.wikipedia.org/wiki/Priceline.com#/media/File:Priceline.com_logo.svg",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Priceline.com_logo.svg",
         "website": "http://ir.pricelinegroup.com",
         "dividend": "none",
         "exchange": "NASDAQ"
@@ -162,7 +162,7 @@
     "QSR": {
         "id": 20,
         "company_name": "Restaurant Brands International",
-        "logo": "https://en.wikipedia.org/wiki/Restaurant_Brands_International#/media/File:Resturant_Brands_International_Logo.gif",
+        "logo": "https://upload.wikimedia.org/wikipedia/en/e/ef/Resturant_Brands_International_Logo.gif",
         "website": "http://www.rbi.com/Investor-Home",
         "dividend": "quarterly",
         "exchange": "NYSE"

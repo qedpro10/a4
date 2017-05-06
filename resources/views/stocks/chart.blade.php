@@ -20,6 +20,8 @@
             chart.draw(data, options);
         }
     </script>
+
+
 @endpush
 
 @section('title')

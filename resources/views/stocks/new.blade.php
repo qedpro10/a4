@@ -21,21 +21,36 @@
         <label for='ticker'>* Ticker</label>
         <input type='text' name='ticker' id='ticker' value='{{ old('ticker', 'TEST') }}'>
 
-
+        <label for='exchange_id'>* Stock Exchange:</label>
+        <select id='exchange_id' name='exchange_id'>
+            <option value='0'>Choose</option>
+            @foreach($exchangesForDropdown as $exchange_id => $exchangeName)
+                <option value='{{ $exchange_id }}'>
+                    {{ $exchangeName }}
+                </option>
+            @endforeach
+        </select>
 
         <label for='company_name'>* Company Name</label>
         <input type='text' name='company_name' id='company_name' value='{{ old('company_name', 'ACME Co.') }}'>
 
         <label for='logo'>* URL to company logo image</label>
-        <input type='text' name='logo' id='logo' value='{{ old('cover', '/images/acme_company.png') }}'>
+        <input type='text' name='logo' id='logo' value='{{ old('cover', 'http://images/acme_company.png') }}'>
 
-
+        <label for='website'>* URL to company investor website</label>
         <input type='text' name='website' id='website' value='{{ old('website', 'https://en.wikipedia.org/wiki/Acme_Corporation') }}'>
 
+        @if(count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
 
 
 
-        
+
 
         <input class='btn btn-primary' type='submit' value='Add Stock'>
     </form>

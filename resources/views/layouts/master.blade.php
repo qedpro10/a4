@@ -24,7 +24,7 @@
 
         <header>
             <a href='/'>
-                <img class="img-valign" id='logo' src='../images/dayTrader_world.png' alt='DayStocker Logo'>
+                <img class="img-valign" id='logo' src='../images/dayTrader_world.png' height=200px alt='DayStocker Logo'>
                 <span class="dayText">DAYSTOCKER</span>
             </a>
 

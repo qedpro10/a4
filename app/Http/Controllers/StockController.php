@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Stock;
+use App\Exchange;
 use Session;
 use Auth;
 use Carbon\Carbon;
 use App\YahooClient;
+use App\User;
 use DB;
 
 class StockController extends Controller
@@ -44,33 +46,6 @@ class StockController extends Controller
     */
     public function show($id) {
 
-
-        $options = [
-            'title' => 'Population of Largest U.S. Cities',
-            'chartArea' => ['width' => '50%'],
-            'hAxis' => [
-                'title' => 'Total Population',
-                'minValue' => 0
-            ],
-            'vAxis' => [
-                'title' => 'City'
-            ],
-            'bars' => 'horizontal', //required if using material chart
-            'axes' => [
-                'y' => [0 => ['side' => 'right']]
-            ]
-        ];
-
-        $cols = ['City', '2010 Population', '2000 PopulaÎtions'];
-        $rows = [
-            ['New York City, NY', 8175000, 8008000],
-            ['Los Angeles, CA', 3792000, 3694000],
-            ['Chicago, IL', 2695000, 2896000],
-            ['Houston, TX', 2099000, 1953000],
-            ['Philadelphia, PA', 1526000, 1517000]
-        ];
-
-
         $stock = Stock::find($id);
 
         if(!$stock) {
@@ -78,25 +53,17 @@ class StockController extends Controller
             return redirect('/');
         }
 
-        // get 30 days of data
+        // get 30 days of historical data
         $startDate = Carbon::now()->subMonths(1);
         $endDate = Carbon::now();
-        $historicalData = YahooClient::getHistoricalData($stock->ticker, $startDate, $endDate);
+        $histData = YahooClient::getHistoricalData($stock->ticker, $startDate, $endDate);
 
         $currentData = YahooClient::getCurrentData($stock->ticker);
-        //dump($currentData);
-
-        $open = $currentData['Open'];
-        //dump($open);
-        //dump($currentData);
 
         return view('stocks.show')->with([
             'stock' => $stock,
             'current' => $currentData,
-            //'historical' => $historicalData,
-            'options' => $options,
-            'cols' => $cols,
-            'rows' => $rows,
+            'histData' => json_encode($histData),
         ]);
     }
 
@@ -150,11 +117,11 @@ class StockController extends Controller
             Session::flash('message','You have to be logged in to create a new stock');
             return redirect('/');
         }
-        $exchangesForDropdown = Exchanges::getExchangesForDropdown();
-        $tagsForCheckboxes = Tag::getTagsForCheckboxes();
+        $exchangesForDropdown = Exchange::getExchangesForDropdown();
+        //$tagsForCheckboxes = Tag::getTagsForCheckboxes();
         return view('stocks.new')->with([
             'exchangesForDropdown' => $exchangesForDropdown,
-            'tagsForCheckboxes' => $tagsForCheckboxes
+            //'tagsForCheckboxes' => $tagsForCheckboxes
         ]);
     }
 
@@ -170,30 +137,43 @@ class StockController extends Controller
         ];
 
         $this->validate($request, [
-            'ticker' => 'required|min:3',
-            'company_name' => 'required|alphanumeric',
+            'ticker' => 'required|min:1|max:6|alpha',
+            'company_name' => 'required',
             'logo' => 'url',
             'website' => 'required|url',
             'exchange_id' => 'not_in:0',
         ], $messages);
 
-        # Add new stock to database
-        $stock = new Stock();
-        $stock->ticker = $request->ticker;
-        $stock->company_name = $request->company_name;
-        $stock->logo = $request->logo;
-        $stock->website = $request->website;
-        $stock->exchange_id = $request->exchange_id;
-        //$stock->user_id = $request->user()->id;
-        $stock->save();
-        # Now handle tags.
-        # Note how the stock has to be created (save) first *before* tags can
-        # be added; this is because the tags need a stock_id to associate with
-        # and we don't have a stock_id until the stock is created.
-        //$tags = ($request->tags) ?: [];
-        //$stock->tags()->sync($tags);
-        $stock->save();
-        Session::flash('message', 'The stock '.$request->ticker.' was added.');
+        // first verify that the stock is not already in the DB
+        // if it is then just favorite it for this user
+        // need to use the first() method, get does not allow you to use ->users() method
+        $newStock = Stock::where('ticker', '=', $request->ticker)->first();
+
+        if (!$newStock) {
+        // else verify that the stock exists by doing a query
+
+            # Add new stock to database
+            $stock = new Stock();
+            $stock->ticker = $request->ticker;
+            $stock->company_name = $request->company_name;
+            $stock->logo = $request->logo;
+            $stock->website = $request->website;
+            $stock->exchange_id = $request->exchange_id;
+
+            // sync the user in the stock_user table
+            $user = $request->user();
+            $stock->save();
+            $stock->users()->sync($user);
+            Session::flash('message', 'The stock '.$request->ticker.' was added.');
+        }
+        else {
+            // favorite the stock - add ot the pivot table if its not already there
+            // FIXME - need to verify that user hasn't already been added because it
+            // will add another entry to the pivot table.
+            $user = $request->user();
+            $newStock->users()->save($user);
+            Session::flash('message', 'The stock '.$request->ticker.' has been added to favorites.');
+        }
         # Redirect the user to stock index
         return redirect('/stocks');
     }

@@ -23,15 +23,6 @@
         <label for='ticker'>* Ticker</label>
         <input type='text' name='ticker' id='ticker' value='{{ old('ticker', $stock->ticker) }}'>
 
-        <label for='company_name'>* Company Name</label>
-        <input type='text' name='company_name' id='company_name' value='{{ old('company_name', $stock->company_name) }}'>
-
-        <label for='logo'>* URL to a logo image</label>
-        <input type='text' name='logo' id='logo' value='{{ old('logo', $stock->logo) }}'>
-
-        <label for='website'>* Company Investor Website</label>
-        <input type='text' name='website' id='website' value='{{ old('website', $stock->website) }}'>
-
         <label for='exchange_id'>* Stock Exchange:</label>
         <select id='exchange_id' name='exchange_id'>
             <option value='0'>Choose</option>
@@ -42,24 +33,22 @@
             @endforeach
         </select>
 
-        <label>Tags</label>
-        <ul id='tags'>
-            @foreach($tagsForCheckboxes as $id => $name)
-                <li><input
-                    type='checkbox'
-                    value='{{ $id }}'
-                    id='tag_{{ $id }}'
-                    name='tags[]'
-                    {{ (in_array($name, $tagsForThisstock)) ? 'CHECKED' : '' }}
-                >&nbsp;
-                <label for='tag_{{ $id }}'>{{ $name }}</label></li>
-            @endforeach
-        </ul>
+        <label for='company_name'>* Company Name</label>
+        <input type='text' name='company_name' id='company_name' value='{{ old('company_name', $stock->company_name) }}'>
+
+        <label for='logo'>* URL to a logo image</label>
+        <input type='text' name='logo' id='logo' value='{{ old('logo', $stock->logo) }}'>
+
+        <label for='website'>* Company Investor Website</label>
+        <input type='text' name='website' id='website' value='{{ old('website', $stock->website) }}'>
+
 
         {{-- Extracted error code to its own view file --}}
         @include('errors')
 
         <br><input class='btn btn-primary' type='submit' value='Save changes'><br><br>
+
+        
 
     </form>
 
