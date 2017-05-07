@@ -89,8 +89,12 @@ class StockController extends Controller
                     // generate an error message and redirect back to the same page
                 }
                 else {
+                    
                     // get the stock info to display
                     // add to the search results
+                    //$stock = [$data->
+
+                    //];
                 }
             }
             else {

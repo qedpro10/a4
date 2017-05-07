@@ -26,6 +26,13 @@ Route::group(['middleware' => 'auth'], function () {
     # Post route to remove stock from tracking portfolio
     Route::post('/stocks/delete', 'StockController@delete');
 
+    # Get route to show a form to create new stock in portfolio
+    #Route::get('/stocks/find', 'StockController@findStock');
+
+    # this would redirect to stock/new with info filled in
+    #Route::post('/stocks/find', 'StockController@addStock');
+
+
 });
 
 # Get route to show an individual stock
@@ -33,6 +40,8 @@ Route::get('/stocks/{id?}', 'StockController@show');
 
 # Get route to a search page
 Route::get('/search', 'StockController@search');
+
+
 
 
 /**
