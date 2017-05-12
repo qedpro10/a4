@@ -13,8 +13,8 @@
 @section('content')
     <h1>Search for a stock</h1>
 
-    <form method='POST' action='/stocks/search'>
-        {{ csrf_field() }}
+    <form method='GET' action='/search'>
+
         <label for='ticker'>* Ticker</label>
         <input type='text' name='ticker' id='ticker' value='{{ old('ticker') }}'>
         <br>
@@ -24,7 +24,7 @@
             <label><input type='radio' name='searchType' value='stockEx'  @if(old('searchType') == 'stockEx') CHECKED @endif>Stock Exchanges</label>
         </fieldset>
         <br>
-        <input type='checkbox' name='exact' id='exact' value='{{ old('exact') ? 'CHECKED' : '' }}' >
+        <input type='checkbox' name='exact' {{ ($exact) ? 'CHECKED' : '' }} >
         <label>exact match</label>
         <br>
         <br>
@@ -34,5 +34,23 @@
 
         <input class='btn btn-primary' type='submit' value='Search'>
     </form>
+
+    {{-- If the form was submitted, display the results: --}}
+    @if($searchTicker != null)
+        <h2>Results for query: <em>{{ $searchTicker }}</em></h2>
+
+        @if(count($searchResults) == 0)
+            No matches found.
+        @else
+
+            @foreach($searchResults as $ticker => $stock)
+                <div class='stock'>
+                    <h3>{{ $ticker }}</h3>
+                    <img src='{{ $stock['logo']}}'>
+                </div>
+            @endforeach
+
+        @endif
+    @endif
 
 @endsection

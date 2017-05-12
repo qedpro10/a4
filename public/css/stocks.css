@@ -44,24 +44,14 @@ Stocks
 }
 
 a.stockAction:link {
-    padding:5px;
+    padding:20px;
     font-size:2.0rem;
 }
 
 a.stockAction:hover {
-    padding:5px;
+    padding:20px;
     color:#18bc9c; /* flatly teel */
 }
-
-.cover {
-    float:left;
-    width:100px;
-    height:137px;
-    background-color:#eee;
-    border:1px solid black;
-    margin-right:10px;
-}
-
 
 /*----------------------------------------------------
 Tags checkboxes

@@ -30,10 +30,22 @@
 @endsection
 
 @section('content')
-    <h1>{{ $stock->ticker }}</h1>
+    <h1>
+    {{ $stock->ticker }}
+
+
+
+
+<abbr title='Edit stock info'>
+    <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-trash'></i></a>
+    </abbr>
+    
+<a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
+</h1>
     <div class='content cf'>
 
-        <a href='{{ $stock->website }}' target='_blank'><img class='stocklogo' src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}'></a>
+        <a href='{{ $stock->website }}' target='_blank'><img class='stocklogo'
+            src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}'></a>
 
         <p>Watching since: {{ $stock->created_at }}</p>
         <p>Last updated: {{ $stock->updated_at }}</p>
@@ -43,8 +55,6 @@
         <p>Day Low: ${{ $current['DaysLow'] }}</p>
         <p>Volume: {{ $current['Volume'] }} shares</p>
 
-        <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
-        <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-trash'></i></a>
 
     </div>
     <div class= 'chart' id="candlechart" style="width: 500px; height: 300px"></div>

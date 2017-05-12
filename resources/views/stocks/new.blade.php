@@ -13,7 +13,7 @@
 @section('content')
     <h1>Add a new stock</h1>
 
-    <form method='POST' action='/stocks/new'>
+    <form method='POST' action='/stocks/add'>
         {{ csrf_field() }}
 
         <small>* Required fields</small>

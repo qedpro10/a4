@@ -35,6 +35,24 @@ class YahooClient
         return $quote;
     }
 
+    // Gets the stock historical data for the given date range
+    public static function getMovingData($ticker, $startDate, $endDate) {
+
+        $client = new \Scheb\YahooFinanceApi\ApiClient();
+        $hist = $client->getHistoricalData($ticker, $startDate, $endDate);
+        $query = $hist['query'];
+        $results = $query['results'];
+        $quote = $results['quote'];
+        foreach ($quote as $day => $data) {
+            $histData[$day] = [(int)$day, (float)$data['Close']];
+        }
+        //dd($histData);
+
+        //dd();
+        return $histData;
+    }
+
+
     // this determines if the stock ticker exists.  Since the api throws an
     // exception if the stock doesn't exist, need to handle this with a try-catch
     // the yahoo api search API does not work reliably so I'm doing a getQuotes
@@ -49,17 +67,36 @@ class YahooClient
             $query = $data['query'];
             $results = $query['results'];
             $quote = $results['quote'];
-            if($quote['Ask'] == null) {
-                return $null;
+            //dd($quote);
+            // check daysLow - if this is null the stock does not exist
+            // yeah this is a hack but YAHOO API is not working correctly and
+            // I needed to do something
+            if($quote['DaysLow'] == null) {
+                return null;
             }
             else {
                 // get the needed data out of the quote and return that
-                return $data;
+                return $quote;
             }
 
         }
         catch (ApiException $e) {
             return null;
         }
+    }
+
+    public function convertExchangeName($yahooEx) {
+        switch ($yahooEx) {
+            case 'NYQ':
+                $name='NYSE';
+                break;
+            case 'NMS':
+                $name='NASDAQ';
+                break;
+            default:
+                dd($yahooEx);
+                $id = 3;
+        }
+        return $id;
     }
 }

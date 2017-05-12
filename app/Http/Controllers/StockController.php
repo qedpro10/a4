@@ -17,7 +17,10 @@ class StockController extends Controller
     //
     /**
 	* GET
-    * /main - main Stocker page -
+    * /index - main Stocker page - shows the stocks that the user
+    *          has added to their portfolio
+    *          Can only get to this page via a login
+    *          Shows the users stocks and the last one added
 	*/
     public function index(Request $request) {
 
@@ -30,13 +33,130 @@ class StockController extends Controller
         if($user) {
             // use the pivot table to get all the stocks favorited by the user
             $stocks = $user->stocks()->orderBy('ticker')->get();
-            // get the 3 most recently added and show them
-            $newStocks = $stocks->sortByDesc('created_at')->take(3);
+            // get the most recently added and list it
+            $newStocks = $user->stocks()->orderBy('created_at', 'desc')->take(1);
+            if (is_null($newStocks)) {
+                dd("No new stock");
+            }
         }
 
         return view('stocks.index')->with([
             'stocks' => $stocks,
             'newStocks' => $newStocks,
+        ]);
+    }
+
+    /**
+    * GET
+    * /about - Stocker information page - describes what Stocker is and does
+    *          Gives an explanation of Bullish Engulfing Pattern
+    */
+    public function about(Request $request) {
+        return view('stocks.about');
+    }
+
+    /**
+    * GET
+    * /search - Stocker search page - allows user to do internal or external
+    *           search based on either an exact or fuzzy match.
+    */
+    public function search(Request $request) {
+        return view('stocks.search');
+    }
+
+
+    /**
+     * GET
+     * /
+    */
+    public function find(Request $request) {
+
+        # Custom error message
+        $messages = [
+            'exchange_id.not_in' => 'Ticker not specified.',
+        ];
+
+        $this->validate($request, [
+            'ticker' => 'required|min:1|max:6|alpha',
+        ], $messages);
+
+
+        $searchResults = [];
+        $searchTicker = $request->input('ticker', null);
+
+        // get the search type local or exchange
+
+        // only search if the ticker has been set
+        if($searchTicker) {
+            // Get search type
+            $searchType = $request->input('searchType');
+
+            if ($searchType == 'stockEx') {
+                //dump("searching exchanges for " . $searchTicker);
+
+                try {
+                    // search the stock exchange for the ticker
+                    $data = YahooClient::findStock(strToUpper($searchTicker));
+                    // check to see if Yahoo found the stock
+                    // if not return to page with error message
+                    if (is_null($data)) {
+                        Session::flash('message','Stock  '.$searchTicker . ' not found');
+                        return view('stocks.search')->with([
+                            'searchTicker' => $searchTicker,
+                            'exact' => $request->exact,
+                            'serachType' => $searchType,
+                        ]);
+                    }
+                    // else get the stock 30 day closing data to display
+                    $startDate = Carbon::now()->subMonths(3);
+                    $endDate = Carbon::now();
+                    $histData = YahooClient::getMovingData($searchTicker, $startDate, $endDate);
+                }
+                catch (ApiException $e) {
+                    // Yahoo request returned exception
+                    // return to page with an error
+                    Session::flash('message','Error contacting Yahoo - try again later');
+                    return view('stocks.search')->with([
+                        'searchTicker' => $searchTicker,
+                        'exact' => $request->exact,
+                        'serachType' => $searchType,
+                    ]);
+
+                }
+
+
+                return view('stocks.searchResults')->with([
+                    'searchTicker' => $searchTicker,
+                    'current'=> $data,
+                    'histData' => json_encode($histData),
+                ]);
+            }
+            else {
+                // search the local database
+                // create the search ticker based on exact or not
+                // note that this should be applicable to both local and stocks
+                // exchange searches but the stock API doesnt work for general
+                // searches
+                $exact = $request->input('exact');
+                if (!$exact) {
+                    // search the database with fuzzy search assuming that the first
+                    // letters specified are a match but the rest are not
+                    $searchTicker = $searchTicker . '%';
+                }
+
+                $stocks = Stock::where('ticker', 'LIKE', $searchTicker)->get();
+                //dump($stocks);
+                foreach($stocks as $stock) {
+                    $searchResults[$stock->ticker] = $stock;
+                }
+                //dd($searchResults);
+            }
+        }
+
+        return view('stocks.show')->with([
+            'searchTicker' => $searchTicker,
+            'exact' => $request->has('exact'),
+            'searchResults' => $searchResults,
         ]);
     }
 
@@ -67,120 +187,65 @@ class StockController extends Controller
         ]);
     }
 
-    /**
-     * GET
-     * /search
-    */
-    public function search(Request $request) {
-        $searchResults = [];
-        $searchTicker = $request->input('ticker', null);
-
-        // only search if the ticker has been set
-        if($searchTicker) {
-            // Get search type
-            $searchType = $request->input('searchType');
-
-            if ($searchType == 'stockEx') {
-                dump("searching exchanges for " . $searchTicker);
-                // search the stock exchange for the ticker
-                $data = YahooClient::findStock(strToUpper($searchTicker));
-                if (is_null($data)) {
-                    // stock was not found
-                    // generate an error message and redirect back to the same page
-                }
-                else {
-                    
-                    // get the stock info to display
-                    // add to the search results
-                    //$stock = [$data->
-
-                    //];
-                }
-            }
-            else {
-                // search the local database
-                // create the search ticker based on exact or not
-                // note that this should be applicable to both local and stocks
-                // exchange searches but the stock API doesn't work for general
-                // searches
-                $exact = $request->input('exact');
-                if (!$exact) {
-                    // search the database with fuzzy search assuming that the first
-                    // letters specified are a match but the rest are not
-                    $searchTicker = $searchTicker . '%';
-                }
-
-                $stocks = Stock::where('ticker', 'LIKE', $searchTicker)->get();
-                //dump($stocks);
-                foreach($stocks as $stock) {
-                    $searchResults[$stock->ticker] = $stock;
-                }
-                //dd($searchResults);
-            }
-        }
-
-        return view('stocks.search')->with([
-            'searchTicker' => $searchTicker,
-            'exact' => $request->has('exact'),
-            'searchResults' => $searchResults,
-        ]);
-    }
-
-    /**
-    * GET
-    * /search - old code - not sure how this fits in
-    */
-    public function searchDB(Request $request) {
-        # Start with an empty array of search results; stocks that
-        # match our search query will get added to this array
-        $searchResults = [];
-        # Store the searchTerm in a variable for easy access
-        # The second parameter (null) is what the variable
-        # will be set to *if* searchTerm is not in the request.
-        $searchTerm = $request->input('searchTerm', null);
-        # Only try and search *if* there's a searchTerm
-        if($searchTerm) {
-            # Open the stocks.json data file
-            $stocksRawData = file_get_contents(database_path().'/stocks.json');
-            # Decode the stock JSON data into an array
-            # Nothing fancy here; just a built in PHP method
-            $stocks = json_decode($stocksRawData, true);
-
-            # Loop through all the stock data, looking for matches
-            foreach($stocks as $ticker => $stock) {
-                # Case sensitive boolean check for a match
-                if($request->has('caseInsensitive')) {
-                    $match = $ticker == $searchTerm;
-                }
-                # If it was a match, add it to our results
-                if($match) {
-                    $searchResults[$ticker] = $stock;
-                }
-            }
-        }
-        # Return the view, with the searchTerm *and* searchResults (if any)
-        return view('stocks.search')->with([
-            'searchTerm' => $searchTerm,
-            'caseSensitive' => $request->has('caseSensitive'),
-            'searchResults' => $searchResults
-        ]);
-    }
 
     /**
     * GET
     * /stocks/new
-    * Display the form to add a new stock
+    * Display the form to add a new stock that was alraedy searched for on YAHOO
+    * Display the data taht came back from that search.
     */
     public function createNewStock(Request $request) {
         if(!Auth::check()) {
             Session::flash('message','You have to be logged in to create a new stock');
             return redirect('/');
         }
-        $exchangesForDropdown = Exchange::getExchangesForDropdown();
-        //$tagsForCheckboxes = Tag::getTagsForCheckboxes();
-        return view('stocks.new')->with([
-            'exchangesForDropdown' => $exchangesForDropdown,
-            //'tagsForCheckboxes' => $tagsForCheckboxes
+
+        $ticker = $request->ticker;
+        $exchange_id = StockController::getExchangeId($request->exchange);
+        $company_name = $request->company_name;
+        $user = $request->user();
+
+        // add stock to database only if it is not present
+        $stock = Stock::where('ticker', '=', $ticker)->first();
+
+        if (is_null($stock)) {
+
+            $newStock = new Stock();
+            $newStock->ticker = $ticker;
+            $newStock->company_name = $company_name;
+            $newStock->exchange_id = $exchange_id;
+            //$newStock->logo = $request->logo;
+            //$newStock->website = $request->website;
+
+
+            // sync the user in the stock_user table
+            $newStock->save();
+            $newStock->users()->sync($user);
+            Session::flash('message', 'The stock '.$ticker.' was added.');
+        }
+        else {
+            // favorite the stock
+            $stock->users()->sync($user);
+            Session::flash('message', 'The stock '.$ticker.' was added to favorites.');
+        }
+
+        // return null values if a user is not logged in
+        $stocks = [];
+        $newStocks = [];
+
+        // $user = $request->user();
+        $user = Auth::user();
+        if($user) {
+            // use the pivot table to get all the stocks favorited by the user
+            $stocks = $user->stocks()->orderBy('ticker')->get();
+            // get the most recently added and list it
+            $newStocks = $stocks->sortByDesc('created_at')->take(1);
+        }
+
+
+        return view('stocks.index')->with([
+            'stocks' => $stocks,
+            'newStocks' => $newStocks,
         ]);
     }
 
@@ -338,6 +403,22 @@ class StockController extends Controller
         return redirect('/stocks');
     }
 
+    // helper function that converts the Yahoo Stock Exchange into the exchange id
+    // needed byt the one to many exchange->stock table
+    public static function getExchangeId($yahooEx) {
+        switch ($yahooEx) {
+            case 'NYQ':
+                $id = 1;
+                break;
+            case 'NMS':
+                $id = 2;
+                break;
+            default:
+                dd($yahooEx);
+                $id = 3;
+        }
+        return $id;
+    }
 
     // test function
     public function googleLineChart(Request $request) {
@@ -350,8 +431,9 @@ class StockController extends Controller
         return view('stocks.chart')->with([
             'histData' => json_encode($data),
         ]);
-
     }
+
+
 
 
 }

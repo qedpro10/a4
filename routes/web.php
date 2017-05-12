@@ -9,10 +9,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/stocks', 'StockController@index');
 
     # Get route to show a form to create new stock in portfolio
-    Route::get('/stocks/new', 'StockController@createNewStock');
+    Route::get('/stocks/newSearch', 'StockController@newSearch');
+
+    # Get route to show a form to create new stock in portfolio
+    Route::post('/stocks/new', 'StockController@createNewStock');
 
     # Post route to process the form to add a new stock
-    Route::post('/stocks/new', 'StockController@storeNewStock');
+    Route::post('/stocks/add', 'StockController@storeNewStock');
 
     # Get route to show a form to edit an existing stock
     Route::get('/stocks/edit/{id}', 'StockController@edit');
@@ -29,17 +32,22 @@ Route::group(['middleware' => 'auth'], function () {
     # Get route to show a form to create new stock in portfolio
     #Route::get('/stocks/find', 'StockController@findStock');
 
-    # this would redirect to stock/new with info filled in
-    #Route::post('/stocks/find', 'StockController@addStock');
+    # Get route to a search page
+    Route::get('/stocks/search', 'StockController@search');
 
+    # Post info for search of database or YAHOO DB
+    # redirects to the "Add To Portfolio page"
+    Route::post('/stocks/search', 'StockController@find');
+
+    # Get route to show an individual stock
+    Route::get('/stocks/show/{id?}', 'StockController@show');
 
 });
 
-# Get route to show an individual stock
-Route::get('/stocks/{id?}', 'StockController@show');
+
 
 # Get route to a search page
-Route::get('/search', 'StockController@search');
+Route::get('/about', 'StockController@about');
 
 
 

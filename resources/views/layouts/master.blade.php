@@ -10,7 +10,13 @@
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css' rel='stylesheet'>
     <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/js/stocker.js"></script>
+
+
     <link href="/css/stocker.css" type='text/css' rel='stylesheet'>
+    <link href="/css/stocks.css" type='text/css' rel='stylesheet'>
 
     @stack('head')
 
@@ -32,18 +38,20 @@
                 <ul>
                     @if(Auth::check())
                         <li><a href='/'>Home</a></li>
-                        <li><a href='/search'>Search</a></li>
-                        <li><a href='/stocks/new'>Add a stock</a></li>
+                        <li><a href='/stocks/search'>Search</a></li>
+                        <li><a href='/stocks/newSearch'>Add a stock</a></li>
                         <li>
                             <form method='POST' id='logout' action='/logout'>
                                 {{csrf_field()}}
                                 <a href='#' onClick='document.getElementById("logout").submit();'>Logout</a>
                             </form>
                         </li>
+                        <li><a href='/about'>About</a></li>
                     @else
                         <li><a href='/'>Home</a></li>
                         <li><a href='/login'>Login</a></li>
                         <li><a href='/register'>Register</a></li>
+                        <li><a href='/about'>About</a></li>
                     @endif
                 </ul>
             </nav>
@@ -62,9 +70,7 @@
 
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="/js/stocker.js"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
 
     @stack('body')
 
