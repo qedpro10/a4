@@ -6,14 +6,14 @@ html {
     min-height:100%;
 }
 body {
-    margin:0 0 100px; /* bottom = footer height */
+    margin:0 0 300px; /* bottom = footer height */
 }
 
 footer {
     position: absolute;
     left:0;
     bottom:0;
-    height:30px;
+    height:100px;
     width:100%;
     background-color:#eee;
     text-align:center;
@@ -98,12 +98,13 @@ Layout
 #content {
     padding:25px;
     width:90%;
-    
+
     margin:auto;
 }
 
 section {
-    text-align:center;
+    text-align:left;
+
 }
 
 p {
@@ -226,18 +227,13 @@ label {
     margin:auto;
 }
 
-.img-valign {
-    float: left;
-    vertical-align: middle;
-    margin-bottom: 0.75em;
-}
 
 .dayText {
-    float:right;
+    margin: auto;
     vertical-align: middle;
     font-size: 64px;
+    padding-left: 20px;
     padding-top: 50px;
-    margin-bottom: 0.75em;
 }
 .daySubText {
   font-size: 18px;
@@ -252,4 +248,19 @@ label {
     height: 50px;
     padding-bottom: 20px;
 
+}
+
+.pattern {
+    text-align:left;
+    font-size: 1.5rem;
+    padding-top: 0;
+}
+
+#bepImage {
+    width: 380px;
+    padding-bottom: 20px;
+}
+
+#logo {
+    
 }

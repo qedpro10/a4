@@ -31,31 +31,24 @@
 
 @section('content')
     <h1>
-    {{ $stock->ticker }}
-
-
-
-
-<abbr title='Edit stock info'>
-    <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-trash'></i></a>
-    </abbr>
-    
-<a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
-</h1>
-    <div class='content cf'>
-
         <a href='{{ $stock->website }}' target='_blank'><img class='stocklogo'
-            src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}'></a>
+            src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}' title='{{ $stock->website }}'></a>
+        {{ $stock->ticker }}
 
+        <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-star' title="Remove from favorites"></i></a>
+        <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil' title="Edit stock info"></i></a>
+    </h1>
+    <div class='content cf'>
+        <h3>{{ $stock->company_name }} </h3>
         <p>Watching since: {{ $stock->created_at }}</p>
         <p>Last updated: {{ $stock->updated_at }}</p>
         <br>
-        <p>Open: ${{ $current['Open'] }}</p>
-        <p>Day High: ${{ $current['DaysHigh'] }}</p>
-        <p>Day Low: ${{ $current['DaysLow'] }}</p>
+        <p>Days Range: ${{ $current['DaysRange'] }}</p>
+        <p>50-day Moving Average: ${{ $current['FiftydayMovingAverage'] }}
+        <p>Change from 50-day Moving Average: {{ $current['PercentChangeFromFiftydayMovingAverage'] }}
+        <p>200-day Moving Average: ${{ $current['TwoHundreddayMovingAverage'] }}
+        <p>Change from 200-day Moving Average: {{ $current['PercentChangeFromTwoHundreddayMovingAverage'] }}
         <p>Volume: {{ $current['Volume'] }} shares</p>
-
-
     </div>
     <div class= 'chart' id="candlechart" style="width: 500px; height: 300px"></div>
 @endsection

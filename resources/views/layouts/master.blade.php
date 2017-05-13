@@ -30,16 +30,14 @@
 
         <header>
             <a href='/'>
-                <img class="img-valign" id='logo' src='/images/dayTrader_world.png' height=200px alt='DayStocker Logo'>
-                <span class="dayText">DAYSTOCKER</span>
+                <img id='logo' src='/images/dayTrader_world.png' alt='DayStocker Logo'>
             </a>
-
+            <span class="dayText">DAYSTOCKER</span>
             <nav>
                 <ul>
                     @if(Auth::check())
                         <li><a href='/'>Home</a></li>
                         <li><a href='/stocks/search'>Search</a></li>
-                        <li><a href='/stocks/newSearch'>Add a stock</a></li>
                         <li>
                             <form method='POST' id='logout' action='/logout'>
                                 {{csrf_field()}}

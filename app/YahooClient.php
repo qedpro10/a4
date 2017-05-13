@@ -32,6 +32,7 @@ class YahooClient
         $query = $currentData['query'];
         $results = $query['results'];
         $quote = $results['quote'];
+        //dd($quote);
         return $quote;
     }
 
