@@ -10,34 +10,37 @@
 @endsection
 
 @section('content')
+    <div class="container" id="content">
+        <div class="row">
+            <div class="col col-md-12">
+                <h2>Your Stocks</h2>
 
-    <section id='stocks' class='cf'>
-        <h2>Your Stocks</h2>
-        @if(count($stocks) == 0)
-            You not watching any stocks yet; would you like to <a href='/stocks/search'>add one</a>?
-        @else
-            @foreach($stocks as $stock)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-12">
+                @if(count($stocks) == 0)
+                    You are not watching any stocks yet; would you like to <a href='/stocks/search'>add one?</a>?
+                @else
+                    @foreach($stocks as $stock)
+                        <h3><a href='{{ $stock->website }}' target='_blank'><img class='stocklogo'
+                            @if($stock->logo != null)
+                            src= '{{ $stock->logo }}'
+                            @else
+                            src= '/images/noimage.png'
+                            @endif
+                            alt='Logo for {{ $stock->ticker }}' title='{{ $stock->website }}'></a>
+                            {{ $stock->ticker }} : {{$stock->exchange->exchange_short}}
+                            <a class='stockAction' href='/stocks/show/{{ $stock->id }}' title="Analyze stock"><i class='fa fa-line-chart'></i></a>
 
-                <div class='stock cf'>
-                    <h2>{{ $stock->ticker }} : {{$stock->exchange->exchange_short}}</h2>
-                    <acronym title="Analyze stock">
-                        <a class='stockAction' href='/stocks/show/{{ $stock->id }}'><i class='fa fa-line-chart'></i></a>
-                    </acronym>
-                    <acronym title="Remove from favorites">
-                        <a class='stockAction' href='/stocks/delete/{{ $stock->id }}'><i class='fa fa-star'></i></a>
-                    </acronym>
-                    <acronym title="Edit Stock">
-                        <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil'></i></a>
-                    </acronym>
-                </div>
-            @endforeach
-        @endif
-    </section>
-    <div class='stock'>
-        @foreach($stocks as $stock)
+                            <a class='stockAction' href='/stocks/delete/{{ $stock->id }}' title="Remove from favorites"><i class='fa fa-star'></i></a>
 
-
-
-        @endforeach
+                            <a class='stockAction' href='/stocks/edit/{{ $stock->id }}' title="Edit Stock"><i class='fa fa-pencil'></i></a>
+                        </h3>
+                    @endforeach
+                @endif
+            </div>
+        </div>
     </div>
+
 @endsection

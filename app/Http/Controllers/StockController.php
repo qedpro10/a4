@@ -61,9 +61,10 @@ class StockController extends Controller
     *           search based on either an exact or fuzzy match.
     */
     public function search(Request $request) {
-        return view('stocks.search');
+        return view('stocks.search')->with([
+            'stocks' => null,
+        ]);
     }
-
 
     /**
      * GET
@@ -80,19 +81,20 @@ class StockController extends Controller
             'ticker' => 'required|min:1|max:6|alpha',
         ], $messages);
 
-
         $searchResults = [];
         $searchTicker = $request->input('ticker', null);
 
-        // get the search type local or exchange
+
 
         // only search if the ticker has been set
         if($searchTicker) {
             // Get search type
             $searchType = $request->input('searchType');
+            $exactMatch = $request->has('exactMatch');
+            //dd($request);
 
             if ($searchType == 'stockEx') {
-                //dump("searching exchanges for " . $searchTicker);
+                //dd("searching exchanges for " . $searchTicker);
 
                 try {
                     // search the stock exchange for the ticker
@@ -103,8 +105,9 @@ class StockController extends Controller
                         Session::flash('message','Stock  '.$searchTicker . ' not found');
                         return view('stocks.search')->with([
                             'searchTicker' => $searchTicker,
-                            'exact' => $request->exact,
-                            'serachType' => $searchType,
+                            'exactMatch' => $exactMatch,
+                            'searchType' => $searchType,
+                            'stocks' => null,
                         ]);
                     }
                     // else get the stock 30 day closing data to display
@@ -118,8 +121,8 @@ class StockController extends Controller
                     Session::flash('message','Error contacting Yahoo - try again later');
                     return view('stocks.search')->with([
                         'searchTicker' => $searchTicker,
-                        'exact' => $request->exact,
-                        'serachType' => $searchType,
+                        'exactMatch' => $exactMatch,
+                        'searchType' => $searchType,
                     ]);
 
                 }
@@ -132,32 +135,36 @@ class StockController extends Controller
                 ]);
             }
             else {
+                //dd("searching local for " . $searchTicker);
                 // search the local database
                 // create the search ticker based on exact or not
                 // note that this should be applicable to both local and stocks
                 // exchange searches but the stock API doesnt work for general
                 // searches
-                $exact = $request->input('exact');
-                if (!$exact) {
+                dump($exactMatch);
+                if ($exactMatch != 'on') {
                     // search the database with fuzzy search assuming that the first
                     // letters specified are a match but the rest are not
+
                     $searchTicker = $searchTicker . '%';
+
+                    $stocks = Stock::where('ticker', 'LIKE', $searchTicker)->get();
+                    //dump('getting fuzzy ' . $searchTicker);
+                    //dump($stocks);
+                }
+                else {
+                    $stocks = Stock::where('ticker', '=', $searchTicker)->get();
+                    //dump('getting exact for ' . $searchTicker);
+                    //dump($stocks);
                 }
 
-                $stocks = Stock::where('ticker', 'LIKE', $searchTicker)->get();
-                //dump($stocks);
-                foreach($stocks as $stock) {
-                    $searchResults[$stock->ticker] = $stock;
-                }
-                //dd($searchResults);
+                return view('stocks.search')->with([
+                    'searchTicker' => $searchTicker,
+                    'exactMatch' => $exactMatch,
+                    'stocks' => $stocks,
+                ]);
             }
         }
-
-        return view('stocks.show')->with([
-            'searchTicker' => $searchTicker,
-            'exact' => $request->has('exact'),
-            'searchResults' => $searchResults,
-        ]);
     }
 
     /**
@@ -195,13 +202,9 @@ class StockController extends Controller
     * Display the data taht came back from that search.
     */
     public function createNewStock(Request $request) {
-        if(!Auth::check()) {
-            Session::flash('message','You have to be logged in to create a new stock');
-            return redirect('/');
-        }
 
         $ticker = $request->ticker;
-        $exchange_id = StockController::getExchangeId($request->exchange);
+        $exchange_id = getExchangeId($request->exchange);
         $company_name = $request->company_name;
         $user = $request->user();
 
@@ -343,8 +346,8 @@ class StockController extends Controller
         ];
         $this->validate($request, [
             'company_name' => 'required',
-            'logo' => 'url',
-            'website' => 'url',
+            'logo' => 'nullable|url',
+            'website' => 'nullable|url',
             'exchange_id' => 'not_in:0',
         ], $messages);
 
@@ -357,7 +360,7 @@ class StockController extends Controller
 
         $stock->save();
         Session::flash('message', 'Your changes to '.$stock->ticker.' were saved.');
-        return redirect('/stocks/edit/'.$request->id);
+        return redirect('/stocks');
     }
     /**
     * GET
@@ -401,23 +404,6 @@ class StockController extends Controller
         }
         # Finish
         return redirect('/stocks');
-    }
-
-    // helper function that converts the Yahoo Stock Exchange into the exchange id
-    // needed byt the one to many exchange->stock table
-    public static function getExchangeId($yahooEx) {
-        switch ($yahooEx) {
-            case 'NYQ':
-                $id = 1;
-                break;
-            case 'NMS':
-                $id = 2;
-                break;
-            default:
-                dd($yahooEx);
-                $id = 3;
-        }
-        return $id;
     }
 
     // test function

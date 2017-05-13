@@ -2,7 +2,6 @@
 
 @push('head')
     <link href='/css/stocker.css' rel='stylesheet'>
-    <link href='/css/welcome.css' rel='stylesheet'>
 @endpush
 
 @section('title')
@@ -10,10 +9,14 @@
 @endsection
 
 @section('content')
-
-    <p>Welcome to DayStocker - A personal Stock Watcher for Day Traders.</p>
-    <p>To get started <a href='/login'>login</a> or <a href='/register'>register</a>.</p>
-    <br>
-    <p>Demo login: jill@harvard.edu | helloworld  or jamal@harvard.edu | helloworld</p>
-
+<div class="container" id="content">
+    <div class="row">
+        <div class="col col-md-12">
+            <h5>Welcome to DayStocker - A personal Stock Watcher for Day Traders.</h5>
+            <h5>To get started <a href='/login'>login</a> or <a href='/register'>register</a>.</h5>
+            <br>
+            <h5>Demo login: jill@harvard.edu | helloworld  or jamal@harvard.edu | helloworld</h5>
+        </div>
+    </div>
+</div>
 @endsection

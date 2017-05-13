@@ -14,15 +14,32 @@ class Exchange extends Model
 
     public static function getExchangesForDropdown() {
 
-        # Get all the authors
+        # Retrieve the exchanges
         $exchanges = Exchange::orderBy('exchange_short', 'ASC')->get();
 
-        # Organize the authors into an array where the key = author id and value = author name
+        # Organize the exchanges into an array where the key = exchange id and value = exchange name
         $exchangesForDropdown = [];
         foreach($exchanges as $exchange) {
             $exchangesForDropdown[$exchange->id] = $exchange->exchange_short;
         }
 
         return $exchangesForDropdown;
+    }
+
+    // helper function that converts the Yahoo Stock Exchange into the exchange id
+    // needed by the one to many exchange->stock table
+    public static function getExchangeId($yahooEx) {
+        switch ($yahooEx) {
+            case 'NYQ':
+                $id = 1;
+                break;
+            case 'NMS':
+                $id = 2;
+                break;
+            default:
+                dd($yahooEx);
+                $id = 3;
+        }
+        return $id;
     }
 }

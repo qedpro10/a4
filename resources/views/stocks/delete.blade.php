@@ -8,16 +8,15 @@
 @section('content')
 
     <h1>Confirm deletion</h1>
-    <form method='POST' action='/stocks/delete'>
+    <form method='POST' id='delete' action='/stocks/delete'>
 
         {{ csrf_field() }}
 
         <input type='hidden' name='id' value='{{ $stock->id }}'?>
 
-        <h2>Are you sure you want to delete <em>{{ $stock->ticker }}</em>?</h2>
+        <h3>Are you sure you want to remove from favorites - <em>{{ $stock->ticker }}</em>?</h3>
 
-        <input type='submit' value='Yes, delete this stock.' class='btn btn-danger'>
-
+        <h2><input type='submit' value='Yes, remove this stock.' class='btn btn-danger'></h2>
     </form>
 
 @endsection

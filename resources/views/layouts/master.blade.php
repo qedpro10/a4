@@ -57,7 +57,6 @@
         </header>
 
         <section>
-            
             @yield('content')
         </section>
 
