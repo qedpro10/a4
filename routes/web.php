@@ -42,6 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
     # Get route to show an individual stock
     Route::get('/stocks/show/{id?}', 'StockController@show');
 
+    # Get route to show a form to edit an existing stock
+    Route::get('/stocks/favorite/{id}', 'StockController@favorite');
+
 });
 
 

@@ -39,7 +39,7 @@
                     {{ $stock->ticker }}
 
                     <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-star' title="Remove from favorites"></i></a>
-                    <a class='stockAction' href='/stocks/edit/{{ $stock->id }}'><i class='fa fa-pencil' title="Edit stock info"></i></a>
+
                 </h1>
             </div>
         </div>
@@ -59,8 +59,8 @@
                 <p>Volume: {{ $current['Volume'] }} shares</p>
             </div>
             <div class="col col-md-6">
-                <h5>Bullish Engulfing Pattern Analysis</h5>
-                <div class= 'chart' id="candlechart" style="width: 600px; height: 300px">
+                <h4>Bullish Engulfing Pattern Analysis</h4>
+                <div class='chart' id='candlechart'>
             </div>
         </div>
     </div>

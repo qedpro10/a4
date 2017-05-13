@@ -63,6 +63,9 @@ class StockController extends Controller
     public function search(Request $request) {
         return view('stocks.search')->with([
             'stocks' => null,
+            'searchType' => null,
+            'exactMatch' => null,
+            'searchType' => null,
         ]);
     }
 
@@ -82,16 +85,14 @@ class StockController extends Controller
         ], $messages);
 
         $searchResults = [];
+
+        // get the info needed for the non-search view
         $searchTicker = $request->input('ticker', null);
-
-
+        $searchType = $request->input('searchType', null);
+        $exactMatch = $request->has('exactMatch');
 
         // only search if the ticker has been set
         if($searchTicker) {
-            // Get search type
-            $searchType = $request->input('searchType');
-            $exactMatch = $request->has('exactMatch');
-            //dd($request);
 
             if ($searchType == 'stockEx') {
                 //dd("searching exchanges for " . $searchTicker);
@@ -135,22 +136,15 @@ class StockController extends Controller
                 ]);
             }
             else {
-                //dd("searching local for " . $searchTicker);
                 // search the local database
                 // create the search ticker based on exact or not
                 // note that this should be applicable to both local and stocks
                 // exchange searches but the stock API doesnt work for general
                 // searches
-                dump($exactMatch);
-                if ($exactMatch != 'on') {
+                if (!$exactMatch) {
                     // search the database with fuzzy search assuming that the first
                     // letters specified are a match but the rest are not
-
-                    $searchTicker = $searchTicker . '%';
-
-                    $stocks = Stock::where('ticker', 'LIKE', $searchTicker)->get();
-                    //dump('getting fuzzy ' . $searchTicker);
-                    //dump($stocks);
+                    $stocks = Stock::where('ticker', 'LIKE', $searchTicker.'%')->get();
                 }
                 else {
                     $stocks = Stock::where('ticker', '=', $searchTicker)->get();
@@ -160,6 +154,7 @@ class StockController extends Controller
 
                 return view('stocks.search')->with([
                     'searchTicker' => $searchTicker,
+                    'searchType' => $searchType,
                     'exactMatch' => $exactMatch,
                     'stocks' => $stocks,
                 ]);
@@ -204,7 +199,7 @@ class StockController extends Controller
     public function createNewStock(Request $request) {
 
         $ticker = $request->ticker;
-        $exchange_id = getExchangeId($request->exchange);
+        $exchange_id = Exchange::getExchangeId($request->exchange);
         $company_name = $request->company_name;
         $user = $request->user();
 
@@ -294,6 +289,9 @@ class StockController extends Controller
             Session::flash('message', 'The stock '.$request->ticker.' was added.');
         }
         else {
+            //StockController::favorite($request->ticker);
+
+
             // favorite the stock - add ot the pivot table if its not already there
             // need to verify that user hasn't already been added because it
             // will add another entry to the pivot table.
@@ -307,11 +305,40 @@ class StockController extends Controller
                 Session::flash('message', 'The stock '.$request->ticker.' already a favorite.');
             }
 
+
         }
         # Redirect the user to stock index
         return redirect('/stocks');
     }
 
+    /*
+    public function favoriteStock(Request $request) {
+        favorite($request->ticker);
+
+    }
+
+    public function favorite($ticker) {
+        // favorite the stock - add ot the pivot table if its not already there
+        // need to verify that user hasn't already been added because it
+        // will add another entry to the pivot table.
+        // first verify that the stock is not already in the DB
+        // if it is then just favorite it for this user
+        // need to use the first() method, get does not allow you to use ->users() method
+        $stock = Stock::where('ticker', '=', ticker)->first();
+
+        $user = Auth::user();
+        $testUser = $stock->users()->where('user_id', '=', $user->user_id)->get();
+        if ($testUser->isEmpty()) {
+            $stock->users()->save($user);
+            Session::flash('message', 'The stock '.$ticker.' has been added to favorites.');
+        }
+        else {
+            Session::flash('message', 'The stock '.$ticker.' already a favorite.');
+        }
+
+    }
+
+    */
     /**
     * GET
     * /stocks/edit/{id}

@@ -8,7 +8,7 @@
 @section('content')
 
     <h1>Confirm deletion</h1>
-    <form method='POST' id='delete' action='/stocks/delete'>
+    <form method='POST' id='fcenter' action='/stocks/delete'>
 
         {{ csrf_field() }}
 

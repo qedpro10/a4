@@ -23,15 +23,17 @@
             <form method='POST' action='/stocks/search'>
                 {{ csrf_field() }}
                 <label for='ticker'>* Ticker</label>
-                <input type='text' name='ticker' id='ticker' value='{{ old('ticker') }}'>
+                <input type='text' name='ticker' id='ticker' value='{{ $searchTicker or '' }}'>
                 <br>
                 <fieldset>
                     <label>Search Type: </label>
-                    <label><input type='radio' name='searchType' value='local' @if(old('searchType') == 'local' || old('searchType') == '') CHECKED @endif>Local</label>
-                    <label><input type='radio' name='searchType' value='stockEx'  @if(old('searchType') == 'stockEx') CHECKED @endif>Stock Exchanges</label>
+                    <label><input type='radio' name='searchType' value='local'
+                        @if( old('searchType') == 'local' || $searchType == 'local' || $searchType  == '') CHECKED @endif>Local</label>
+                    <label><input type='radio' name='searchType' value='stockEx'
+                        @if( old('searchType') || $searchType == 'stockEx') CHECKED @endif>Stock Exchanges</label>
                 </fieldset>
                 <br>
-                <input type='checkbox' name='exactMatch' @if(old('exactMatch')) CHECKED @endif>
+                <input type='checkbox' name='exactMatch' {{(old('exactMatch') || ($exactMatch)) ? 'CHECKED' : '' }}>
                 <label>exact match</label>
                 <br>
                 <br>
@@ -39,9 +41,7 @@
             </form>
         </div>
         <div class="col col-md-8">
-            @if(count($stocks) == 0)
-                <p>No stocks found.</p>
-            @else
+            @if(count($stocks) != 0)
                 @foreach($stocks as $stock)
                     <h3><a href='{{ $stock->website }}' target='_blank'><img class='stocklogo'
                         @if($stock->logo != null)
@@ -53,9 +53,8 @@
                         {{ $stock->ticker }} : {{$stock->exchange->exchange_short}}
                         <a class='stockAction' href='/stocks/show/{{ $stock->id }}' title="Analyze stock"><i class='fa fa-line-chart'></i></a>
 
-                        <a class='stockAction' href='/stocks/delete/{{ $stock->id }}' title="Remove from favorites"><i class='fa fa-star'></i></a>
+                        <a class='stockAction' href='/stocks/favorite/{{ $stock->id }}' title="Add to favorites"><i class='fa fa-star'></i></a>
 
-                        <a class='stockAction' href='/stocks/edit/{{ $stock->id }}' title="Edit Stock"><i class='fa fa-pencil'></i></a>
                     </h3>
                 @endforeach
             @endif

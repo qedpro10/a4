@@ -89,6 +89,7 @@ h3 {
 h4, h5 {
     font-size:2.5rem
     font-weight: bolder;
+    padding-bottom: 0px;
 }
 
 .truncate {
@@ -273,7 +274,8 @@ label {
 
 }
 
-#delete {
+/* center the form an contents */
+#fcenter {
     width:600px;
     margin: auto;
     text-align: center;
