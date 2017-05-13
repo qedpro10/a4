@@ -22,7 +22,7 @@
     <div class="row" id="content">
         <div class="col col-md-6">
             <blockquote class="pattern" cite='www.themarketguys.com'>
-            <p>The <b>Bullish Engulfing Pattern</b> is one of stock trader's favorites because  it creates such a  strong indication
+            <p>The <b>Bullish Engulfing Pattern</b> is one of stock trader's favorites because it creates such a strong indication
             of the return of the buyers after a short selloff.  This pattern does not require confirmation: it's okay to enter
             the trade on the day of the bullish engulfing candle without waiting for a follow-up day to show that the uptrend
             is continuing.  The key points of this pattern are the following:</p>
