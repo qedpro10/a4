@@ -15,7 +15,6 @@
             <h5>Welcome to DayStocker - A personal Stock Watcher for Day Traders.</h5>
             <h5>To get started <a href='/login'>login</a> or <a href='/register'>register</a>.</h5>
             <br>
-            <h5>Demo login: jill@harvard.edu | helloworld  or jamal@harvard.edu | helloworld</h5>
         </div>
     </div>
 </div>

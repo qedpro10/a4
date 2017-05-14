@@ -62,9 +62,9 @@
         </section>
 
         <footer>
+            <h5>Jen Smith</h5>
             &copy; {{ date('Y') }} &nbsp;&nbsp;
             <a href='https://github.com/qedpro10/a4' target='_blank'><i class='fa fa-github'></i> View on Github</a> &nbsp;&nbsp;
-            <a href='http://a4.rogue42.me' target='_blank'><i class='fa fa-link'></i> View on Production</a>
         </footer>
 
     </div>

@@ -27,7 +27,7 @@
             the trade on the day of the bullish engulfing candle without waiting for a follow-up day to show that the uptrend
             is continuing.  The key points of this pattern are the following:</p>
             <ul class="pattern">
-                <li class='pattern'>The stock must be in a short-term downtrend within a longer uptrend. This indicates a pullback within a larger positive run. </li>
+                <li>The stock must be in a short-term downtrend within a longer uptrend. This indicates a pullback within a larger positive run. </li>
                 <li>The first day of the pattern is a down day, as evidenced by the red (or black) candle. The red candle tells us that the short-term downtrend is still controlled by the sellers who are pushing the stock to lower levels.</li>
                <li>The second day candle should be green (white), indicating that the buyers are in control for that day.</li>
                <li>The key to the Bullish Engulfing Pattern: The second days body must completely engulf the first day's body.  While not required, it shows more strength if the second day's body completely engulfs the first day's body and shadows.</li>

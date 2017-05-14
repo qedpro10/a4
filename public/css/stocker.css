@@ -6,7 +6,7 @@ html {
     min-height:100%;
 }
 body {
-    margin:0 0 500px; /* bottom = footer height */
+    margin:0 0 300px; /* bottom = footer height */
 }
 
 footer {
