@@ -30,36 +30,44 @@
 @endsection
 
 @section('content')
-    <div class="container" id="content">
+    <div class="container">
         <div class="row">
             <div class="col col-md-12 content cf">
                 <h1>
                     <a href='{{ $stock->website }}' target='_blank'><img class='stocklogo'
-                        src='{{ $stock->logo }}' alt='Logo for {{ $stock->ticker }}' title='{{ $stock->website }}'></a>
+                        @if($stock->logo != null)
+                        src= '{{ $stock->logo }}'
+                        @else
+                        src= '/images/noimage.png'
+                        @endif
+                        alt='Logo {{ $stock->ticker }}' title='{{ $stock->website }}'></a>
+
                     {{ $stock->ticker }}
 
-                    <a class='stockAction' href='/stocks/{{ $stock->id }}/delete'><i class='fa fa-star' title="Remove from favorites"></i></a>
+                    <a class='stockAction' href='/stocks/delete/{{ $stock->id }}'><i class='fa fa-star' title="Remove from favorites"></i></a>
 
                 </h1>
             </div>
         </div>
     </div>
-    <div class="container" id="content">
+    <div class="container">
         <div class="row">
             <div class="col col-md-6">
                 <h4>{{ $stock->company_name }} </h4>
                 <p>Watching since: {{ $stock->created_at }}</p>
                 <p>Last updated: {{ $stock->updated_at }}</p>
                 <br>
-                <p>Days Range: ${{ $current['DaysRange'] }}</p>
-                <p>50-day Moving Average: ${{ $current['FiftydayMovingAverage'] }}
-                <p>Change from 50-day Moving Average: {{ $current['PercentChangeFromFiftydayMovingAverage'] }}
-                <p>200-day Moving Average: ${{ $current['TwoHundreddayMovingAverage'] }}
-                <p>Change from 200-day Moving Average: {{ $current['PercentChangeFromTwoHundreddayMovingAverage'] }}
-                <p>Volume: {{ $current['Volume'] }} shares</p>
+                @if ($current != null)
+                    <p>Days Range: ${{ $current['DaysRange'] }}</p>
+                    <p>50-day Moving Average: ${{ $current['FiftydayMovingAverage'] }}
+                    <p>Change from 50-day Moving Average: {{ $current['PercentChangeFromFiftydayMovingAverage'] }}
+                    <p>200-day Moving Average: ${{ $current['TwoHundreddayMovingAverage'] }}
+                    <p>Change from 200-day Moving Average: {{ $current['PercentChangeFromTwoHundreddayMovingAverage'] }}
+                    <p>Volume: {{ $current['Volume'] }} shares</p>
+                @endif
             </div>
             <div class="col col-md-6">
-                <h4>Bullish Engulfing Pattern Analysis</h4>
+                <h4>Bullish Engulfing Pattern Recommendation: {{ $recommendation }}</h4>
                 <div class='chart' id='candlechart'>
             </div>
         </div>

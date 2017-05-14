@@ -166,5 +166,14 @@
         "website": "http://www.rbi.com/Investor-Home",
         "dividend": "quarterly",
         "exchange": "NYSE"
+    },
+    "AST": {
+        "id": 20,
+        "company_name": "Asterias Biotherapeutics Inc",
+        "logo": "",
+        "website": "http://asteriasbiotherapeutics.com/investors.php",
+        "dividend": "quarterly",
+        "exchange": "NYSE_MKT"
     }
+
 }

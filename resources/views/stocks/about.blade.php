@@ -12,14 +12,14 @@
 @endsection
 
 @section('content')
-    <div class="container" id="content">
+    <div class="container">
         <div class="row">
             <div class="col col-md-12">
                 <h1>About DayStocker</h1>
             </div>
         </div>
     </div>
-    <div class="row" id="content">
+    <div class="row">
         <div class="col col-md-6">
             <blockquote class="pattern" cite='www.themarketguys.com'>
             <p>The <b>Bullish Engulfing Pattern</b> is one of stock trader's favorites because it creates such a strong indication
@@ -36,7 +36,7 @@
         </div>
         <div class="col col-md-6">
             <blockquote class="pattern">
-                <img id='bepImage' src='/images/BullishEP.png'/>
+                <img id='bepImage' src='/images/BullishEP.png' alt='stockerLogo'/>
                 <p>DayStocker is a stock analyzer designed specifically to analyze stocks for the Bullish Pivot Point patterns.</p>
                 <p>Users can select stocks for their portfolio and DayStocker will analyze these for the Bullish Engulfing Pattern trend.</p>
                 <p>End of day buy, sell, hold recommendations are available.</p>

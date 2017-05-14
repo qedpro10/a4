@@ -71,7 +71,13 @@ class StockController extends Controller
 
     /**
      * GET
-     * /
+     * This function does a search for a stock.  if the search is
+     * external - that is - requested to serach stock exchange, then
+     * the request goes thru the YAHOO Api and returns the stock matching the
+     * specified symbol.  YAHOO doesn't provide fuzzy searching so its always an
+     * exact match.  If local is selected then it will search the users database
+     * for any stocks matching the criteria.  Exact match search and fuzzy search
+     * both work.
     */
     public function find(Request $request) {
 
@@ -128,7 +134,7 @@ class StockController extends Controller
 
                 }
 
-
+                Session::forget('message');
                 return view('stocks.searchResults')->with([
                     'searchTicker' => $searchTicker,
                     'current'=> $data,
@@ -144,12 +150,19 @@ class StockController extends Controller
                 if (!$exactMatch) {
                     // search the database with fuzzy search assuming that the first
                     // letters specified are a match but the rest are not
-                    $stocks = Stock::where('ticker', 'LIKE', $searchTicker.'%')->get();
+                    $user = Auth::user();
+
+                    // looking at the database for stocks that the user has added only!
+                    $stocks = $user->stocks()->where('ticker', 'LIKE', $searchTicker.'%')->get();
                 }
                 else {
                     $stocks = Stock::where('ticker', '=', $searchTicker)->get();
                     //dump('getting exact for ' . $searchTicker);
                     //dump($stocks);
+                }
+
+                if (count($stocks) == 0) {
+                    Session::flash('message', 'Stock not found - try searching exchange.');
                 }
 
                 return view('stocks.search')->with([
@@ -165,9 +178,12 @@ class StockController extends Controller
     /**
     * GET
     * /stocks/{id}
+    * This collects the data to produce the BEP chart and then directs to the
+    * show view
     */
     public function show($id) {
 
+        // get the stock from the database
         $stock = Stock::find($id);
 
         if(!$stock) {
@@ -175,30 +191,45 @@ class StockController extends Controller
             return redirect('/');
         }
 
-        // get 30 days of historical data
+        // get 30 days of historical data and the current data
         $startDate = Carbon::now()->subMonths(1);
         $endDate = Carbon::now();
         $histData = YahooClient::getHistoricalData($stock->ticker, $startDate, $endDate);
 
         $currentData = YahooClient::getCurrentData($stock->ticker);
 
+        // Sometimes the YAHOO API returns with an error.  This is caught in a
+        // try/catch but need to handle the return of null data.
+        // This issue is difficult to reproduce but i think this solves it
+        if (is_null($histData) || is_null($currentData)) {
+            Session::flash('message', 'Unable to contact YAHOO - try again later.');
+            $recommendation = "WAIT";
+        }
+        else {
+            // makes recommendation based on the current and historical data
+            $recommendation = YahooClient::analyze($currentData, $histData);
+        }
+
+        // return the show view with the candlestick graph and recommendation
         return view('stocks.show')->with([
             'stock' => $stock,
             'current' => $currentData,
             'histData' => json_encode($histData),
+            'recommendation' => $recommendation,
         ]);
     }
-
 
     /**
     * GET
     * /stocks/new
     * Display the form to add a new stock that was alraedy searched for on YAHOO
-    * Display the data taht came back from that search.
+    * Display the data that came back from that search.
     */
     public function createNewStock(Request $request) {
 
+        // get the stock information from what was returned from YAHOO search
         $ticker = $request->ticker;
+        // convert the exchange into a known entity
         $exchange_id = Exchange::getExchangeId($request->exchange);
         $company_name = $request->company_name;
         $user = $request->user();
@@ -212,9 +243,6 @@ class StockController extends Controller
             $newStock->ticker = $ticker;
             $newStock->company_name = $company_name;
             $newStock->exchange_id = $exchange_id;
-            //$newStock->logo = $request->logo;
-            //$newStock->website = $request->website;
-
 
             // sync the user in the stock_user table
             $newStock->save();
@@ -227,6 +255,7 @@ class StockController extends Controller
             Session::flash('message', 'The stock '.$ticker.' was added to favorites.');
         }
 
+        // get the info needed to return to the home page
         // return null values if a user is not logged in
         $stocks = [];
         $newStocks = [];
@@ -239,8 +268,8 @@ class StockController extends Controller
             // get the most recently added and list it
             $newStocks = $stocks->sortByDesc('created_at')->take(1);
         }
-
-
+        // clear the message - because sometimes it doesn't clear
+        Session::forget('message');
         return view('stocks.index')->with([
             'stocks' => $stocks,
             'newStocks' => $newStocks,
@@ -272,8 +301,7 @@ class StockController extends Controller
         $newStock = Stock::where('ticker', '=', $request->ticker)->first();
 
         if (is_null($newStock)) {
-        // else verify that the stock exists by doing a query
-
+            // stock is not in database so add it
             # Add new stock to database
             $stock = new Stock();
             $stock->ticker = $request->ticker;
@@ -289,9 +317,6 @@ class StockController extends Controller
             Session::flash('message', 'The stock '.$request->ticker.' was added.');
         }
         else {
-            //StockController::favorite($request->ticker);
-
-
             // favorite the stock - add ot the pivot table if its not already there
             // need to verify that user hasn't already been added because it
             // will add another entry to the pivot table.
@@ -311,34 +336,6 @@ class StockController extends Controller
         return redirect('/stocks');
     }
 
-    /*
-    public function favoriteStock(Request $request) {
-        favorite($request->ticker);
-
-    }
-
-    public function favorite($ticker) {
-        // favorite the stock - add ot the pivot table if its not already there
-        // need to verify that user hasn't already been added because it
-        // will add another entry to the pivot table.
-        // first verify that the stock is not already in the DB
-        // if it is then just favorite it for this user
-        // need to use the first() method, get does not allow you to use ->users() method
-        $stock = Stock::where('ticker', '=', ticker)->first();
-
-        $user = Auth::user();
-        $testUser = $stock->users()->where('user_id', '=', $user->user_id)->get();
-        if ($testUser->isEmpty()) {
-            $stock->users()->save($user);
-            Session::flash('message', 'The stock '.$ticker.' has been added to favorites.');
-        }
-        else {
-            Session::flash('message', 'The stock '.$ticker.' already a favorite.');
-        }
-
-    }
-
-    */
     /**
     * GET
     * /stocks/edit/{id}
@@ -357,8 +354,6 @@ class StockController extends Controller
             'id' => $id,
             'stock' => $stock,
             'exchangesForDropdown' => $exchangesForDropdown,
-            //'tagsForCheckboxes' => $tagsForCheckboxes,
-            //'tagsForThisStock' => $tagsForThisStock,
         ]);
     }
     /**
@@ -378,6 +373,7 @@ class StockController extends Controller
             'exchange_id' => 'not_in:0',
         ], $messages);
 
+        // find the stock in the db
         $stock = Stock::find($request->id);
         # Edit stock in the database
         $stock->company_name = $request->company_name;
@@ -432,21 +428,4 @@ class StockController extends Controller
         # Finish
         return redirect('/stocks');
     }
-
-    // test function
-    public function googleLineChart(Request $request) {
-
-        $startDate = Carbon::now()->subMonths(1);
-        $endDate = Carbon::now();
-        $data = YahooClient::getHistoricalData("CIEN", $startDate, $endDate);
-        //echo json_encode($data);
-
-        return view('stocks.chart')->with([
-            'histData' => json_encode($data),
-        ]);
-    }
-
-
-
-
 }

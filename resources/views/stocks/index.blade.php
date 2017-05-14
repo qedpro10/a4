@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <div class="container" id="content">
+    <div class="container">
         <div class="row">
             <div class="col col-md-12">
                 <h2>Your Stocks</h2>

@@ -15,12 +15,9 @@ class ExchangesTableSeeder extends Seeder
         # Array of exchange data to add
         $exchanges = [
             ['NYSE', "New York Stock Exchange", 'EST'],
-            ['DJIA', 'Dow Jones Industrial Average', 'EST'],
             ['NASDAQ', 'Nasdaq', 'EST'],
-            ['SP400', 'Standard and Poors MidCap 400', 'EST'],
-            ['SP500', 'Standard and Poors 500', 'EST'],
-            ['SP600', 'Standard and Poors SmallCap 600', 'EST'],
-            ['NYSE_MKT', 'NYSE Small CAp Equity Market', 'EST'],
+            ['TSE', 'Toronto Stock Exchange', 'EST'],
+            ['NYSE_MKT', 'NYSE Small Cap Equity Market', 'EST'],
         ];
 
         # Initiate a new timestamp we can use for created_at/updated_at fields

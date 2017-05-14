@@ -18,7 +18,7 @@
         @endif
 
         <label for="password">Password</label>
-        <input id="password" type="password"name="password" required>
+        <input id="password" type="password" name="password" required>
         @if ($errors->has('password'))
             <div class="error">{{ $errors->first('email') }}</div>
         @endif

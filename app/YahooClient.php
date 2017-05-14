@@ -13,44 +13,58 @@ class YahooClient
     // Gets the stock historical data for the given date range
     public static function getHistoricalData($ticker, $startDate, $endDate) {
 
-        $client = new \Scheb\YahooFinanceApi\ApiClient();
-        $hist = $client->getHistoricalData($ticker, $startDate, $endDate);
-        $query = $hist['query'];
-        $results = $query['results'];
-        $quote = $results['quote'];
-        foreach ($quote as $day => $data) {
-            $histData[$day] = [(string)$day, (float)$data['Low'], (float)$data['Open'], (float)$data['Close'], (float)$data['High']];
+        try {
+            $client = new \Scheb\YahooFinanceApi\ApiClient();
+            $hist = $client->getHistoricalData($ticker, $startDate, $endDate);
+            $query = $hist['query'];
+            $results = $query['results'];
+            $quote = $results['quote'];
+            foreach ($quote as $day => $data) {
+                $histData[$day] = [(string)$day, (float)$data['Low'], (float)$data['Open'], (float)$data['Close'], (float)$data['High']];
+            }
+            
+            return $histData;
         }
-        return $histData;
+        catch (ApiException $e) {
+            return null;
+        }
+
     }
 
     // Gets the stock current information and price
     public static function getCurrentData($ticker) {
 
-        $client = new \Scheb\YahooFinanceApi\ApiClient();
-        $currentData = $client->getQuotes($ticker);
-        $query = $currentData['query'];
-        $results = $query['results'];
-        $quote = $results['quote'];
-        //dd($quote);
-        return $quote;
+        try {
+            $client = new \Scheb\YahooFinanceApi\ApiClient();
+            $currentData = $client->getQuotes($ticker);
+            $query = $currentData['query'];
+            $results = $query['results'];
+            $quote = $results['quote'];
+
+            return $quote;
+        }
+        catch (ApiException $e) {
+            return null;
+        }
     }
 
     // Gets the stock historical data for the given date range
     public static function getMovingData($ticker, $startDate, $endDate) {
-
-        $client = new \Scheb\YahooFinanceApi\ApiClient();
-        $hist = $client->getHistoricalData($ticker, $startDate, $endDate);
-        $query = $hist['query'];
-        $results = $query['results'];
-        $quote = $results['quote'];
-        foreach ($quote as $day => $data) {
-            $histData[$day] = [(int)$day, (float)$data['Close']];
+        try {
+            $client = new \Scheb\YahooFinanceApi\ApiClient();
+            $hist = $client->getHistoricalData($ticker, $startDate, $endDate);
+            $query = $hist['query'];
+            $results = $query['results'];
+            $quote = $results['quote'];
+            foreach ($quote as $day => $data) {
+                $histData[$day] = [(int)$day, (float)$data['Close']];
+            }
+            return $histData;
         }
-        //dd($histData);
+        catch (ApiException $e) {
+            return null;
+        }
 
-        //dd();
-        return $histData;
     }
 
 
@@ -59,11 +73,10 @@ class YahooClient
     // the yahoo api search API does not work reliably so I'm doing a getQuotes
     // and determining if the data is valid.
     public static function findStock($ticker) {
-        $client = new \Scheb\YahooFinanceApi\ApiClient();
-
         try {
-            // search api is not working
-            //$data = $client->search($ticker);
+            // search api is not working so this is a workaround to searching for
+            // stock on the YAHOO site
+            $client = new \Scheb\YahooFinanceApi\ApiClient();
             $data = $client->getQuotes($ticker);
             $query = $data['query'];
             $results = $query['results'];
@@ -86,18 +99,25 @@ class YahooClient
         }
     }
 
-    public function convertExchangeName($yahooEx) {
-        switch ($yahooEx) {
-            case 'NYQ':
-                $name='NYSE';
-                break;
-            case 'NMS':
-                $name='NASDAQ';
-                break;
-            default:
-                dd($yahooEx);
-                $id = 3;
+    // this function is supposed to analyze the historical to determine if there is a BEP
+    // however the YAHOO data is not sufficient for this, so I am making up a pseudo algorithm
+    // to simulate what the recommendations would be.  They are not accurate - Don't buy
+    // based on these recommendations.  LOL
+    public static function analyze($data, $hdata) {
+        //dd($data);
+        if (is_null($data)) return "UNKNOWN";
+
+        if ($data['TwoHundreddayMovingAverage'] > 0) {
+            if (($data['FiftydayMovingAverage'] < 0) &&
+                ($data['PercentChangeFromFiftydayMovingAverage'] > 0)) {
+                return "BUY";
+            }
+            else {
+                return "WAIT";
+            }
         }
-        return $id;
+        else {
+            return "WAIT";
+        }
     }
 }

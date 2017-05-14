@@ -36,10 +36,32 @@ class Exchange extends Model
             case 'NMS':
                 $id = 2;
                 break;
-            default:
-                dd($yahooEx);
+            case 'TSE':
                 $id = 3;
+                break;
+            // catch all for foreign traded in the nyse mkt
+            case 'NYSE_MKT':
+            default:
+                $id = 4;
+                break;
         }
         return $id;
     }
+
+    public function convertExchangeName($yahooEx) {
+        switch ($yahooEx) {
+            case 'NYQ':
+                $name='NYSE';
+                break;
+            case 'NMS':
+                $name='NASDAQ';
+                break;
+            case 'TSE':
+                $name='TSE';
+            default:
+                $name = "NYSE_MKT";
+        }
+        return $name;
+    }
+
 }

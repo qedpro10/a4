@@ -6,7 +6,7 @@ html {
     min-height:100%;
 }
 body {
-    margin:0 0 300px; /* bottom = footer height */
+    margin:0 0 500px; /* bottom = footer height */
 }
 
 footer {
@@ -256,13 +256,15 @@ label {
 .stocklogo {
     height: 50px;
     padding-bottom: 10px;
+    padding-right: 20px;
 
 }
 
 .pattern {
     text-align:left;
     font-size: 1.5rem;
-    padding-top: 0;
+    padding-top: 10px;
+    padding-bottom: 100px;
 }
 
 #bepImage {
@@ -270,12 +272,8 @@ label {
     padding-bottom: 20px;
 }
 
-#logo {
-
-}
-
 /* center the form an contents */
-#fcenter {
+.fcenter {
     width:600px;
     margin: auto;
     text-align: center;
