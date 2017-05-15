@@ -46,6 +46,14 @@
                 <label for='website'>Company Investor Website</label>
                 <input type='text' name='website' id='website' value='{{ old('website', $stock->website) }}'>
 
+                <label for='website'>* Dividend</label>
+                <select id='dividend' name='dividend'>
+                    <option value='0'>Choose</option>
+                    <option value="none" {{ ($stock->dividend == 'none') ? 'SELECTED' : '' }}>None</option>
+                    <option value="quarterly" {{ ($stock->dividend == 'quarterly') ? 'SELECTED' : '' }}>Quarterly</option>
+                    <option value="yearly" {{ ($stock->dividend == 'yearly') ? 'SELECTED' : '' }}>Yearly</option>
+                </select>
+
                 {{-- Extracted error code to its own view file --}}
                 @include('errors')
 

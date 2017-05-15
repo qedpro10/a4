@@ -285,6 +285,7 @@ class StockController extends Controller
         # Custom error message
         $messages = [
             'exchange_id.not_in' => 'Exchange not selected.',
+            'dividend.not_in' => 'Dividend not selected.',
         ];
 
         $this->validate($request, [
@@ -293,6 +294,7 @@ class StockController extends Controller
             'logo' => 'url',
             'website' => 'required|url',
             'exchange_id' => 'not_in:0',
+            'dividend' => 'date',
         ], $messages);
 
         // first verify that the stock is not already in the DB
@@ -308,6 +310,13 @@ class StockController extends Controller
             $stock->company_name = $request->company_name;
             $stock->logo = $request->logo;
             $stock->website = $request->website;
+
+            // set the dividend based on the DividendPayDate not being ''
+            $stock->dividend = 'none';
+            if ($request->dividend != '') {
+                $stock->dividend = 'quarterly';
+            }
+
             $stock->exchange_id = $request->exchange_id;
 
             // sync the user in the stock_user table
@@ -365,12 +374,14 @@ class StockController extends Controller
         # Custom error message
         $messages = [
             'exchange_id.not_in' => 'Exchange not selected.',
+            'dividend.not_in' => 'Dividend not selected.',
         ];
         $this->validate($request, [
             'company_name' => 'required',
             'logo' => 'nullable|url',
             'website' => 'nullable|url',
             'exchange_id' => 'not_in:0',
+            'dividend' => 'not_in:0',
         ], $messages);
 
         // find the stock in the db
@@ -379,6 +390,7 @@ class StockController extends Controller
         $stock->company_name = $request->company_name;
         $stock->logo = $request->logo;
         $stock->website = $request->website;
+        $stock->dividend = $request->dividend;
         $stock->exchange_id = $request->exchange_id;
 
         $stock->save();

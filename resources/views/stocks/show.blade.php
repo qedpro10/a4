@@ -65,6 +65,7 @@
                     <p>Change from 200-day Moving Average: {{ $current['PercentChangeFromTwoHundreddayMovingAverage'] }}
                     <p>Volume: {{ $current['Volume'] }} shares</p>
                 @endif
+                <p>Dividend: {{ $stock->dividend}} </p>
             </div>
             <div class="col col-md-6">
                 <h4>Bullish Engulfing Pattern Recommendation: {{ $recommendation }}</h4>

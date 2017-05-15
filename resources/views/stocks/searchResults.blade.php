@@ -43,6 +43,7 @@
                 <h5>Day High: ${{ $current['DaysHigh'] }}</h5>
                 <h5>Day Low: ${{ $current['DaysLow'] }}</h5>
                 <h5>Volume: {{ $current['Volume'] }} shares</h5>
+                <h5>Dividend Date: {{ $current['ExDividendDate'] == '' ? "none" : $current['ExDividendDate'] }} </h5>
             </div>
             <div class="col col-md-6">
                 <h4>30-day Closing</h4>
@@ -57,6 +58,7 @@
                     <input type='hidden' name='ticker' id='ticker' value='{{ $searchTicker }}'>
                     <input type='hidden' name='exchange' id='exchange' value='{{ $current['StockExchange'] }}'>
                     <input type='hidden' name='company_name' id='company_name' value='{{ $current['Name'] }}'>
+                    <input type='hidden' name='dividend' id='dividend' value='{{ $current['ExDividendDate'] }}'>
 
                     <input class='btn btn-primary' type='submit' value='Add To Portfolio'>
                 </form>
