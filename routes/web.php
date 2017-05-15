@@ -43,32 +43,29 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/stocks/show/{id?}', 'StockController@show');
 
     # Get route to show a form to edit an existing stock
-    Route::get('/stocks/favorite/{id}', 'StockController@favorite');
+    //Route::get('/stocks/favorite/{id}', 'StockController@favorite');
 
 });
 
-
-
-# Get route to a search page
+# Get route to the about page accessible w/o logging in
 Route::get('/about', 'StockController@about');
-
-
-
 
 /**
 * Log viewer
 * (only accessible locally)
 */
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-//if(config('app.env') == 'local') {
-//    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-//}
+
+if(config('app.env') == 'local') {
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+}
 
 
 /**
 * Practice
 */
-Route::any('/practice/{n?}', 'PracticeController@index');
+if(config('app.env') == 'local') {
+    Route::any('/practice/{n?}', 'PracticeController@index');
+}
 
 /**
 * Auth routes
@@ -100,54 +97,55 @@ if(App::environment('local')) {
 
 };
 
+if(config('app.env') == 'local') {
+    Route::get('/show-login-status', function() {
 
-Route::get('/show-login-status', function() {
+        # You may access the authenticated user via the Auth facade
+        $user = Auth::user();
 
-    # You may access the authenticated user via the Auth facade
-    $user = Auth::user();
+        if($user)
+            dump('You are logged in.', $user->toArray());
+        else
+            dump('You are not logged in.');
 
-    if($user)
-        dump('You are logged in.', $user->toArray());
-    else
-        dump('You are not logged in.');
+        return;
+    });
+}
 
-    return;
-});
+if(config('app.env') == 'local') {
+    Route::get('/debug', function() {
 
-Route::get('/debug', function() {
+    	echo '<pre>';
 
-	echo '<pre>';
+    	echo '<h1>Environment</h1>';
+    	echo App::environment().'</h1>';
 
-	echo '<h1>Environment</h1>';
-	echo App::environment().'</h1>';
+    	echo '<h1>Debugging?</h1>';
+    	if(config('app.debug')) echo "Yes"; else echo "No";
 
-	echo '<h1>Debugging?</h1>';
-	if(config('app.debug')) echo "Yes"; else echo "No";
+    	echo '<h1>Database Config</h1>';
+        	echo 'DB defaultStringLength: '.Illuminate\Database\Schema\Builder::$defaultStringLength;
+        	/*
+    	The following commented out line will print your MySQL credentials.
+    	Uncomment this line only if you're facing difficulties connecting to the database and you
+            need to confirm your credentials.
+            When you're done debugging, comment it back out so you don't accidentally leave it
+            running on your production server, making your credentials public.
+            */
+    	//print_r(config('database.connections.mysql'));
 
-	echo '<h1>Database Config</h1>';
-    	echo 'DB defaultStringLength: '.Illuminate\Database\Schema\Builder::$defaultStringLength;
-    	/*
-	The following commented out line will print your MySQL credentials.
-	Uncomment this line only if you're facing difficulties connecting to the database and you
-        need to confirm your credentials.
-        When you're done debugging, comment it back out so you don't accidentally leave it
-        running on your production server, making your credentials public.
-        */
-	//print_r(config('database.connections.mysql'));
+    	echo '<h1>Test Database Connection</h1>';
+    	try {
+    		$results = DB::select('SHOW DATABASES;');
+    		echo '<strong style="background-color:green; padding:5px;">Connection confirmed</strong>';
+    		echo "<br><br>Your Databases:<br><br>";
+    		print_r($results);
+    	}
+    	catch (Exception $e) {
+    		echo '<strong style="background-color:crimson; padding:5px;">Caught exception: ', $e->getMessage(), "</strong>\n";
+    	}
 
-	echo '<h1>Test Database Connection</h1>';
-	try {
-		$results = DB::select('SHOW DATABASES;');
-		echo '<strong style="background-color:green; padding:5px;">Connection confirmed</strong>';
-		echo "<br><br>Your Databases:<br><br>";
-		print_r($results);
-	}
-	catch (Exception $e) {
-		echo '<strong style="background-color:crimson; padding:5px;">Caught exception: ', $e->getMessage(), "</strong>\n";
-	}
+    	echo '</pre>';
 
-	echo '</pre>';
-
-});
-
-Route::get('/chart', 'StockController@googleLineChart');
+    });
+}
