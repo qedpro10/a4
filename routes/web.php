@@ -59,9 +59,10 @@ Route::get('/about', 'StockController@about');
 * Log viewer
 * (only accessible locally)
 */
-if(config('app.env') == 'local') {
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-}
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+//if(config('app.env') == 'local') {
+//    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+//}
 
 
 /**
