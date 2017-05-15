@@ -43,7 +43,6 @@
                 <p><a href='/register'>Register</a> to get started now</p>
             </blockquote>
         </div>
-    <div>
-</div>
+    </div>
 
 @endsection
