@@ -55,9 +55,9 @@ Route::get('/about', 'StockController@about');
 * (only accessible locally)
 */
 
-if(config('app.env') == 'local') {
+//if(config('app.env') == 'local') {
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-}
+//}
 
 
 /**
@@ -97,7 +97,7 @@ if(App::environment('local')) {
 
 };
 
-if(config('app.env') == 'local') {
+//if(config('app.env') == 'local') {
     Route::get('/show-login-status', function() {
 
         # You may access the authenticated user via the Auth facade
@@ -110,9 +110,9 @@ if(config('app.env') == 'local') {
 
         return;
     });
-}
+//}
 
-if(config('app.env') == 'local') {
+//if(config('app.env') == 'local') {
     Route::get('/debug', function() {
 
     	echo '<pre>';
@@ -148,4 +148,4 @@ if(config('app.env') == 'local') {
     	echo '</pre>';
 
     });
-}
+//}
